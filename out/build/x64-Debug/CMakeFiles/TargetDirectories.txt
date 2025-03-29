@@ -1,0 +1,3 @@
+C:/Users/aruns/Documents/University_documents/Year_2_sem_2/COMP2501/Tutorial1/GameDemo/out/build/x64-Debug/CMakeFiles/Assignment1.dir
+C:/Users/aruns/Documents/University_documents/Year_2_sem_2/COMP2501/Tutorial1/GameDemo/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/aruns/Documents/University_documents/Year_2_sem_2/COMP2501/Tutorial1/GameDemo/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
