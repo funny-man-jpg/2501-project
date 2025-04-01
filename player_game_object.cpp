@@ -18,7 +18,7 @@ PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Sh
 	invincible_ = false;
 
 	velocity_ = glm::vec3(0.0, 0.0, 0.0);
-	accel_mag_ = 0.5;
+	accel_mag_ = 3.0f;
 
 	firing_timer_ = new Timer();
 }
@@ -39,10 +39,35 @@ void PlayerGameObject::Update(double delta_time, GLuint *textures) {
 			texture_ = textures[tex_purple_dragon];
 		}
 
+		//Getting the magnitude to clamp movement
+		float mag = glm::length(velocity_);
+
+		//Adding friction because I want my ship to decelerate
+		float friction = 0.001f;
+		if (mag > 0)
+		{
+			float newMagnitude = mag - friction;
+			//preventing going backwards from friction
+			if (newMagnitude < 0) newMagnitude = 0;
+			//lowering the magnitude, we can still move since the acceleration beats out the friction when we do press buttons
+			velocity_.x = (velocity_.x / mag) * newMagnitude;
+			velocity_.y = (velocity_.y / mag) * newMagnitude;
+		}
+		//clamping the magnitude to 2
+		if (mag > 2.0f) {
+			velocity_.x = (velocity_.x / mag) * 2.0f;
+			velocity_.y = (velocity_.y / mag) * 2.0f;
+		}
+
 		// update the player's position based on velocity
+
+		position_ += velocity_ * (float)delta_time;
+		/*
 		float new_x = position_.x + velocity_.x * delta_time;
 		float new_y = position_.y + velocity_.y * delta_time;
+		
 		position_ = glm::vec3(new_x, new_y, 0.0);
+		*/
 	}
 	
 	// Call the parent's update method to move the object in standard way, if desired
@@ -52,38 +77,18 @@ void PlayerGameObject::Update(double delta_time, GLuint *textures) {
 // acceleration functions
 void PlayerGameObject::AccelForwards(double delta_time) {
 	velocity_ += GetBearing() * (float)(accel_mag_ * delta_time);
-
-	// clamp the velocity
-	if (glm::length(velocity_) > MAX_VELOCITY) {
-		velocity_ = (velocity_ / glm::length(velocity_)) * (float) MAX_VELOCITY;
-	}
 }
 
 void PlayerGameObject::AccelBackwards(double delta_time) {
 	velocity_ -= GetBearing() * (float)(accel_mag_ * delta_time);
-
-	// clamp the velocity
-	if (glm::length(velocity_) > MAX_VELOCITY) {
-		velocity_ = (velocity_ / glm::length(velocity_)) * (float)MAX_VELOCITY;
-	}
 }
 
 void PlayerGameObject::AccelRight(double delta_time) {
 	velocity_ += GetRight() * (float)(accel_mag_ * delta_time);
-
-	// clamp the velocity
-	if (glm::length(velocity_) > MAX_VELOCITY) {
-		velocity_ = (velocity_ / glm::length(velocity_)) * (float)MAX_VELOCITY;
-	}
 }
 
 void PlayerGameObject::AccelLeft(double delta_time) {
 	velocity_ -= GetRight() * (float)(accel_mag_ * delta_time);
-
-	// clamp the velocity
-	if (glm::length(velocity_) > MAX_VELOCITY) {
-		velocity_ = (velocity_ / glm::length(velocity_)) * (float)MAX_VELOCITY;
-	}
 }
 
 // function to shoot a projectile

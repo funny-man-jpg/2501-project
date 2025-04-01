@@ -46,6 +46,7 @@ namespace game {
 			PlayerGameObject *target_;
 			Timer *retarget_;
 			float speed_;
+			glm::vec3 steering_;
 
 			// time attribute for movement
 			double t_;
