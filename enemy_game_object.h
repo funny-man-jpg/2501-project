@@ -6,13 +6,15 @@
 
 #define FULL_CIRCLE 2 * 3.14159265358979323
 #define RETARGET_LENGTH 2
-#define STATE_CHANGE_DISTANCE 2.0
+#define PURSUIT_CHANGE_DISTANCE 2.0
+#define CHASE_CHANGE_DISTANCE 1.5
 
 namespace game {
 	// enemy's different states
 	enum {
 		patrolling = 0,
-		intercepting = 1
+		pursuit = 1,
+		intercepting = 2
 	};
 
 	// new class for enemy game objects
@@ -33,7 +35,7 @@ namespace game {
 
 		private:
 			// patrolling or intercepting
-			bool state_;
+			int state_;
 
 			// ellipse attributes
 			glm::vec3 ellipse_center_;
@@ -42,7 +44,7 @@ namespace game {
 			float rps_;
 
 			// interception attributes
-			glm::vec3 velocity_;
+			//glm::vec3 velocity_;
 			PlayerGameObject *target_;
 			Timer *retarget_;
 			float speed_;

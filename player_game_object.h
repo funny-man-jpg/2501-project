@@ -55,7 +55,7 @@ namespace game {
 
             // motion values
             float accel_mag_;
-            glm::vec3 velocity_;
+            //glm::vec3 velocity_;
 
             // firing values
             Timer *firing_timer_;

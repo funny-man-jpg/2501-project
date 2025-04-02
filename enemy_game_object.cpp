@@ -39,7 +39,9 @@ namespace game {
 			glm::vec3 prev_position = position_;
 
 			// check if need to change state
-			if (glm::length(target_->GetPosition() - position_) < STATE_CHANGE_DISTANCE) {
+			if (glm::length(target_->GetPosition() - position_) < PURSUIT_CHANGE_DISTANCE && state_ < 1) {
+				state_ = pursuit;
+			}else if (glm::length(target_->GetPosition() - position_) < CHASE_CHANGE_DISTANCE) {
 				state_ = intercepting;
 			}
 
@@ -68,8 +70,10 @@ namespace game {
 
 			}
 			// if intercepting, chase the player
-			else if (state_ == intercepting) {
-				steering_ = target_->GetPosition() - position_ - velocity_;
+			else if (state_ == pursuit) {
+				glm::vec3 futurePosition = target_->GetPosition() + target_->GetVelocity() * 2.0f;
+
+				steering_ = futurePosition - position_ - velocity_;
 				steering_ /= glm::length(steering_);
 				steering_ *= 0.001;
 				velocity_ += steering_;
@@ -87,6 +91,13 @@ namespace game {
 				position_ = glm::vec3(new_x, new_y, 0.0);
 				*/
 				
+			}
+			else if (state_ == intercepting) {
+
+				steering_ = target_->GetPosition() - position_ - velocity_;
+				steering_ /= glm::length(steering_);
+				steering_ *= 0.001;
+				velocity_ += steering_;
 			}
 			position_ += velocity_ * (float)delta_time;
 			glm::vec3 heading = position_ - prev_position;

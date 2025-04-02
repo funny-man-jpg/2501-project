@@ -69,6 +69,7 @@ namespace game {
             bool GetExploding(void) const { return exploding_; }
             int GetType(void) const { return type_; }
             float GetRadius(void) const { return radius_; }
+            glm::vec3 GetVelocity(void) const { return velocity_; }
 
             // Get bearing direction (direction in which the game object
             // is facing)
@@ -97,6 +98,7 @@ namespace game {
 
         protected:
             // Object's Transform Variables
+            glm::vec3 velocity_;
             glm::vec3 position_;
             glm::vec2 scale_;
             float angle_;
