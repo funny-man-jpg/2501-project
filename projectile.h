@@ -11,7 +11,6 @@ namespace game {
 		public:
 			// Constructor/Decontructor
 			Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction);
-			~Projectile(void);
 
 			// Update function for moving the projectile
 			void Update(double delta_time, GLuint* textures) override;

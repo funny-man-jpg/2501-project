@@ -26,7 +26,6 @@ PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Sh
 // Deconstructor
 PlayerGameObject::~PlayerGameObject(void) {
 	delete invincible_timer_;
-	delete timer_;
 	delete firing_timer_;
 }
 

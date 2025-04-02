@@ -2,7 +2,7 @@
 
 namespace game {
 	// Constructor
-	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture)
+	EnemyGameObject::EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: GameObject(position, geom, shader, texture) {
 		type_ = enemy;
 		state_ = patrolling;
@@ -16,7 +16,7 @@ namespace game {
 
 		// set up interception
 		velocity_ = glm::vec3(0.0, 0.0, 0.0);
-		target_ = nullptr;
+		target_ = target;
 		retarget_ = new Timer();
 		retarget_->Start(0.01f);
 		speed_ = 0.25;
@@ -24,7 +24,6 @@ namespace game {
 
 	// Deconstructor
 	EnemyGameObject::~EnemyGameObject(void) {
-		delete timer_;
 		delete retarget_;
 	}
 

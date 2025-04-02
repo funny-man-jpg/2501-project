@@ -27,10 +27,6 @@ namespace game {
 		SetRotation(glm::atan(direction.y, direction.x));
 	}
 
-	Projectile::~Projectile(void) {
-		delete timer_;
-	}
-
 	// Update function for moving the projectile
 	void Projectile::Update(double delta_time, GLuint* textures) {
 		prev_time_ = curr_time_;

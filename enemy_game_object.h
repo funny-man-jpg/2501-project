@@ -19,8 +19,8 @@ namespace game {
 	class EnemyGameObject : public GameObject {
 		public:
 			// Constructor and Deconstructor
-			EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
-			~EnemyGameObject(void);
+			EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
+			virtual ~EnemyGameObject(void);
 
 			// Setters
 			void SetTarget(PlayerGameObject* player);

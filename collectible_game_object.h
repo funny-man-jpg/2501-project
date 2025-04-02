@@ -9,7 +9,6 @@ namespace game {
 		public:
 			// Constructor and Deconstructor
 			CollectibleGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
-			~CollectibleGameObject(void);
 
 			// handle collisions
 			void Hit(GLuint *textures, GameObject *other) override;

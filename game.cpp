@@ -19,6 +19,10 @@
 #include "enemy_game_object.h"
 // add the Projectile class header
 #include "projectile.h"
+// add the new enemy type headers
+#include "attacker_enemy_game_object.h"
+#include "patrol_enemy_game_object.h"
+#include "runner_enemy_game_object.h"
 #include "game.h"
 
 namespace game {
@@ -78,26 +82,26 @@ void Game::SetupGameWorld(void)
     game_objects_[0]->SetRotation(pi_over_two);
 
     // Setup other objects
-    EnemyGameObject *enemy1 = new EnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship]);
+    EnemyGameObject *enemy1 = new EnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy1);
     game_objects_[1]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
-    enemy1->SetTarget(player_);
-    EnemyGameObject* enemy2 = new EnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship]);
+    //enemy1->SetTarget(player_);
+    EnemyGameObject* enemy2 = new EnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy2);
     game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
-    enemy2->SetTarget(player_);
-    EnemyGameObject* enemy3 = new EnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship]);
+    //enemy2->SetTarget(player_);
+    EnemyGameObject* enemy3 = new EnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy3);
     game_objects_[3]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
-    enemy3->SetTarget(player_);
-    EnemyGameObject* enemy4 = new EnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship]);
+    //enemy3->SetTarget(player_);
+    EnemyGameObject* enemy4 = new EnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy4);
     game_objects_[4]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
-    enemy4->SetTarget(player_);
+    //enemy4->SetTarget(player_);
 
     // Setup collectible objects
     game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
@@ -262,8 +266,8 @@ void Game::Update(double delta_time)
         }
 
         // spawn enemy
-        EnemyGameObject* new_enemy = new EnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[SPACESHIP]);
-        new_enemy->SetTarget(player_);
+        EnemyGameObject* new_enemy = new EnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[SPACESHIP], player_);
+        //new_enemy->SetTarget(player_);
         AddGameObject(new_enemy);
 
         spawn_timer_->Start(SPAWN_TIME);

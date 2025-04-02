@@ -52,7 +52,7 @@ namespace game {
         public:
             // Constructor and Deconstructor
             GameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture);
-            ~GameObject(void);
+            virtual ~GameObject(void);
 
             // Update the GameObject's state. Can be overriden in children
             virtual void Update(double delta_time, GLuint *textures);

@@ -21,6 +21,10 @@ set(HDRS
     enemy_game_object.h
     # add projectile class
     projectile.h
+    # add the three enemy types
+    attacker_enemy_game_object.h
+    patrol_enemy_game_object.h
+    runner_enemy_game_object.h
 )
  
 set(SRCS
@@ -39,6 +43,10 @@ set(SRCS
     enemy_game_object.cpp
     # add projectile class
     projectile.cpp
+    # add the three enemy types
+    attacker_enemy_game_object.cpp
+    patrol_enemy_game_object.cpp
+    runner_enemy_game_object.cpp
     sprite_vertex_shader.glsl
     sprite_fragment_shader.glsl
 )

@@ -6,11 +6,6 @@ namespace game {
 	: GameObject(position, geom, shader, texture) {
 		type_ = collectible;
 	}
-
-	// Deconstructor
-	CollectibleGameObject::~CollectibleGameObject(void) {
-		delete timer_;
-	}
 	
 	void CollectibleGameObject::Hit(GLuint *textures, GameObject *other) {
 		if (other->GetType() == player) {
