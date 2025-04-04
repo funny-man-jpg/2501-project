@@ -23,6 +23,7 @@
 #include "attacker_enemy_game_object.h"
 #include "patrol_enemy_game_object.h"
 #include "runner_enemy_game_object.h"
+#include "text_game_object.h"
 #include "game.h"
 
 namespace game {
@@ -68,6 +69,8 @@ void Game::SetupGameWorld(void)
     // add the projectile texture
     textures.push_back("/textures/fireball.png");
 
+    textures.push_back("/textures/font.png");
+
     // Load textures
     LoadTextures(textures);
 
@@ -80,6 +83,10 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(player_);
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
+
+    TextGameObject *text = new TextGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    text->SetText("Score: " + score_);
+    game_objects_.push_back(text);
 
     // Setup other objects
     EnemyGameObject *enemy1 = new EnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
@@ -125,6 +132,9 @@ void Game::SetupGameWorld(void)
     background->SetCollideability(false);
 
     game_objects_.push_back(background);
+
+    //start the score timer
+    score_timer_.Start(1.0);
 }
 
 
@@ -204,6 +214,12 @@ void Game::Update(double delta_time)
 {
     // setup the counter
     int i = 0;
+
+    //check the score timer
+    if (score_timer_.Finished()) {
+        score_++;
+        score_timer_.Start(1.0);
+    }
 
     // Update all game objects
     // use a while loop to let the removal of objects from game_objects_ work
@@ -394,6 +410,8 @@ void Game::Init(void)
 
     // Initialize sprite shader
     sprite_shader_.Init((resources_directory_g+std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/sprite_fragment_shader.glsl")).c_str());
+
+    text_shader_.Init((resources_directory_g + std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g + std::string("/text_fragment_shader.glsl")).c_str());
 
     // Initialize time
     current_time_ = 0.0;

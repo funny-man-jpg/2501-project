@@ -34,7 +34,8 @@ namespace game {
         tex_blood_splatter = 5,
         tex_star_collectible = 6,
         tex_purple_dragon_invincible = 7,
-        tex_fireball = 8
+        tex_fireball = 8,
+        tex_font = 9
     };
 
     // collision types

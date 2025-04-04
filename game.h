@@ -61,6 +61,8 @@ namespace game {
             // Shader for rendering sprites in the scene
             Shader sprite_shader_;
 
+            Shader text_shader_;
+
             // References to textures
             // This needs to be a pointer
             GLuint *tex_;
@@ -77,6 +79,9 @@ namespace game {
 
             // a timer to track spawning times
             Timer *spawn_timer_;
+            
+            // a timer to track when to add to the score
+            Timer score_timer_;
 
             // new attribute to determine if game is over
             bool game_over_;
