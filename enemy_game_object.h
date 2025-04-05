@@ -8,6 +8,7 @@
 #define RETARGET_LENGTH 2
 #define PURSUIT_CHANGE_DISTANCE 2.0
 #define CHASE_CHANGE_DISTANCE 1.5
+#define ENEMY_FIRING_COOLDOWN 5
 
 namespace game {
 	// enemy's different states
@@ -33,8 +34,11 @@ namespace game {
 			// deal with collisions
 			void Hit(GLuint* textures, GameObject* other) override;
 
-		private:
-			// patrolling or intercepting
+			// handle shooting
+			virtual Projectile* Shoot(GLuint* textures) = 0;
+
+		protected:
+			// enemy movement state
 			int state_;
 
 			// ellipse attributes
@@ -52,6 +56,9 @@ namespace game {
 
 			// time attribute for movement
 			double t_;
+
+			// attributes for shooting
+			Timer *firing_timer_;
 	};
 }
 

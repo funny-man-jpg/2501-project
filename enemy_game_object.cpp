@@ -20,11 +20,16 @@ namespace game {
 		retarget_ = new Timer();
 		retarget_->Start(0.01f);
 		speed_ = 0.25;
+
+		// set up shooting
+		firing_timer_ = new Timer();
+		firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
 	}
 
 	// Deconstructor
 	EnemyGameObject::~EnemyGameObject(void) {
 		delete retarget_;
+		delete firing_timer_;
 	}
 
 	// Setters

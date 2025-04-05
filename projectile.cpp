@@ -1,7 +1,7 @@
 #include "projectile.h"
 
 namespace game {
-	Projectile::Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction) 
+	Projectile::Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction, int target_type) 
 		: GameObject(position, geom, shader, texture) {
 		
 		scale_ = glm::vec2(0.5f, 0.25f);
@@ -24,6 +24,9 @@ namespace game {
 		impact_time_ = 0;
 		soonest_impact_time_ = LIFESPAN * 2;
 
+		// set up the target type
+		target_type_ = target_type;
+
 		SetRotation(glm::atan(direction.y, direction.x));
 	}
 
@@ -38,8 +41,10 @@ namespace game {
 			position_ = glm::vec3(new_x, new_y, 0.0);
 		}
 		else {
-			SetCollideability(false);
-			enemy_->Hit(textures, this);
+			if (collideable_) {
+				enemy_->Hit(textures, this);
+				SetCollideability(false);
+			}
 		}
 
 		if (timer_->Finished()) {
@@ -49,7 +54,7 @@ namespace game {
 
 	void Projectile::CheckForCollision(GLuint *textures, GameObject *other) {
 		// do ray circle collision
-		if (other->GetType() == enemy) {
+		if (other->GetType() == target_type_) {
 			// calculate the intersection times
 			glm::vec3 d = this->GetBearing();
 			glm::vec3 circlePartToRayPart = this->position_ - other->GetPosition();
@@ -77,7 +82,7 @@ namespace game {
 	}
 
 	void Projectile::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == enemy) {
+		if (other->GetType() == target_type_) {
 			texture_ = textures[tex_explosion];
 			exploding_ = true;
 			scale_ = glm::vec2(0.75f);

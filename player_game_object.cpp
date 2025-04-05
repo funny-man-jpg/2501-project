@@ -42,6 +42,7 @@ void PlayerGameObject::Update(double delta_time, GLuint *textures) {
 		float mag = glm::length(velocity_);
 
 		//Adding friction because I want my ship to decelerate
+		/*
 		float friction = 0.001f;
 		if (mag > 0)
 		{
@@ -52,6 +53,7 @@ void PlayerGameObject::Update(double delta_time, GLuint *textures) {
 			velocity_.x = (velocity_.x / mag) * newMagnitude;
 			velocity_.y = (velocity_.y / mag) * newMagnitude;
 		}
+		*/
 		//clamping the magnitude to 2
 		if (mag > 2.0f) {
 			velocity_.x = (velocity_.x / mag) * 2.0f;
@@ -96,7 +98,7 @@ Projectile* PlayerGameObject::Fire(GLuint tex) {
 		firing_timer_->Start(FIRING_COOLDOWN);
 
 		// make a new projectile directly in front of the player
-		return new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, tex, GetBearing());
+		return new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, tex, GetBearing(), enemy);
 	}
 
 	return nullptr;
@@ -105,7 +107,7 @@ Projectile* PlayerGameObject::Fire(GLuint tex) {
 // new function to handle the player collisions
 void PlayerGameObject::Hit(GLuint *textures, GameObject *other) {
 	// for colliding with EnemyGameObjects
-	if (other->GetType() == enemy && !invincible_) {
+	if ((other->GetType() == enemy || other->GetType() == projectile) && !invincible_) {
 		health_--;
 
 		if (health_ == 0) {

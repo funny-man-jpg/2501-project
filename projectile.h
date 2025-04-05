@@ -10,7 +10,7 @@ namespace game {
 	class Projectile : public GameObject {
 		public:
 			// Constructor/Decontructor
-			Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction);
+			Projectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction, int target_type);
 
 			// Update function for moving the projectile
 			void Update(double delta_time, GLuint* textures) override;
@@ -33,6 +33,9 @@ namespace game {
 			GameObject *enemy_;
 			float impact_time_;
 			float soonest_impact_time_;
+
+			// target type for the projectile
+			int target_type_;
 	};
 }
 

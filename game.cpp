@@ -89,22 +89,22 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(text);
 
     // Setup other objects
-    EnemyGameObject *enemy1 = new EnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject *enemy1 = new AttackerEnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy1);
     game_objects_[1]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
-    EnemyGameObject* enemy2 = new EnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy2 = new AttackerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy2);
     game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy2->SetTarget(player_);
-    EnemyGameObject* enemy3 = new EnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy3 = new AttackerEnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy3);
     game_objects_[3]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy3->SetTarget(player_);
-    EnemyGameObject* enemy4 = new EnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
     game_objects_.push_back(enemy4);
     game_objects_[4]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
@@ -260,6 +260,13 @@ void Game::Update(double delta_time)
             }
         }
 
+        // check for firing
+        if (current_game_object->GetType() == enemy) {
+            EnemyGameObject* curr_enemy = (EnemyGameObject*) current_game_object;
+
+            AddGameObject(curr_enemy->Shoot(tex_));
+        }
+
         // increment the counter
         i++;
     }
@@ -281,8 +288,8 @@ void Game::Update(double delta_time)
             y = -y;
         }
 
-        // spawn enemy
-        EnemyGameObject* new_enemy = new EnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[SPACESHIP], player_);
+        // spawn attacker enemies
+        EnemyGameObject* new_enemy = new AttackerEnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[SPACESHIP], player_);
         //new_enemy->SetTarget(player_);
         AddGameObject(new_enemy);
 
