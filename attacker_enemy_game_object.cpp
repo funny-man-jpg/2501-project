@@ -15,7 +15,7 @@ namespace game {
 			firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
 
 			// fire a basic projectile
-			return new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[projectile], GetBearing(), player);
+			return new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player);
 		}
 		
 		return nullptr;

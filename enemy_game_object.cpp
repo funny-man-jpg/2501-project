@@ -118,7 +118,7 @@ namespace game {
 	}
 
 	void EnemyGameObject::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == player || other->GetType() == projectile) {
+		if (other->GetType() == player || (other->GetType() == projectile && ((Projectile*) other)->GetTargetType() == enemy)) {
 			SetCollideability(false);
 			texture_ = textures[tex_explosion];
 			exploding_ = true;

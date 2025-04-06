@@ -19,8 +19,10 @@ set(HDRS
     collectible_game_object.h
     # add enemy game object class
     enemy_game_object.h
-    # add projectile class
+    # add projectile classes
     projectile.h
+    wave_projectile.h
+    bomb.h
     # add the three enemy types
     attacker_enemy_game_object.h
     patrol_enemy_game_object.h
@@ -42,8 +44,10 @@ set(SRCS
     collectible_game_object.cpp
     # add enemy game object class
     enemy_game_object.cpp
-    # add projectile class
+    # add projectile classes
     projectile.cpp
+    wave_projectile.cpp
+    bomb.cpp
     # add the three enemy types
     attacker_enemy_game_object.cpp
     patrol_enemy_game_object.cpp

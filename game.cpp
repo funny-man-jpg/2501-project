@@ -51,9 +51,11 @@ void Game::SetupGameWorld(void)
     // Declare all the textures here
     std::vector<std::string> textures;
 
-    // changed the previous player and enemy textures into these two
+    // add player and enemy textures
     textures.push_back("/textures/purple_dragon.png"); 
-    textures.push_back("/textures/spaceship.png");
+    textures.push_back("/textures/runner_spaceship.png");
+    textures.push_back("/textures/patrol_spaceship.png");
+    textures.push_back("/textures/attacker_spaceship.png");
 
     textures.push_back("/textures/stars.png");
     textures.push_back("/textures/orb.png");
@@ -66,8 +68,11 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/star_collectible.png");
     textures.push_back("/textures/purple_dragon_invincible.png");
 
-    // add the projectile texture
+    // add the projectile textures
     textures.push_back("/textures/fireball.png");
+    textures.push_back("/textures/attacker_bullet.png");
+    textures.push_back("/textures/wave_bullet.png");
+    textures.push_back("/textures/bomb.png");
 
     textures.push_back("/textures/font.png");
 
@@ -89,22 +94,22 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(text);
 
     // Setup other objects
-    EnemyGameObject *enemy1 = new AttackerEnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject *enemy1 = new PatrolEnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_patrol_spaceship], player_);
     game_objects_.push_back(enemy1);
     game_objects_[1]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
-    EnemyGameObject* enemy2 = new AttackerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_spaceship], player_);
     game_objects_.push_back(enemy2);
     game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy2->SetTarget(player_);
-    EnemyGameObject* enemy3 = new AttackerEnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy3 = new AttackerEnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy3);
     game_objects_[3]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy3->SetTarget(player_);
-    EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_spaceship], player_);
+    EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy4);
     game_objects_[4]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
@@ -289,7 +294,7 @@ void Game::Update(double delta_time)
         }
 
         // spawn attacker enemies
-        EnemyGameObject* new_enemy = new AttackerEnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[SPACESHIP], player_);
+        EnemyGameObject* new_enemy = new AttackerEnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
         //new_enemy->SetTarget(player_);
         AddGameObject(new_enemy);
 

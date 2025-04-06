@@ -13,12 +13,14 @@
 // definition for the player's index in the game_objects_ vector
 #define PLAYER 0
 
+/*
 // definition for the spaceship texture's index
 #define SPACESHIP 1
 
 // definitions for the two explosion texture indexes
 #define EXPLOSION 4
 #define BLOOD_SPLATTER 5
+*/
 
 // definition for the time between enemy spawns
 #define SPAWN_TIME 10
