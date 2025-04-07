@@ -53,7 +53,8 @@ void Game::SetupGameWorld(void)
 
     // add player and enemy textures
     textures.push_back("/textures/purple_dragon.png"); 
-    textures.push_back("/textures/runner_spaceship.png");
+    textures.push_back("/textures/runner_end.png");
+    textures.push_back("/textures/runner_middle.png");
     textures.push_back("/textures/patrol_spaceship.png");
     textures.push_back("/textures/attacker_spaceship.png");
 
@@ -66,13 +67,16 @@ void Game::SetupGameWorld(void)
 
     // add the collectible/invincibility textures
     textures.push_back("/textures/star_collectible.png");
+    textures.push_back("/textures/emp_ammo.png");
+    textures.push_back("/textures/heart.png");
     textures.push_back("/textures/purple_dragon_invincible.png");
 
-    // add the projectile textures
+    // add the projectile/attack textures
     textures.push_back("/textures/fireball.png");
     textures.push_back("/textures/attacker_bullet.png");
     textures.push_back("/textures/wave_bullet.png");
     textures.push_back("/textures/bomb.png");
+    textures.push_back("/textures/emp_ring.png");
 
     textures.push_back("/textures/font.png");
 
@@ -99,7 +103,7 @@ void Game::SetupGameWorld(void)
     game_objects_[1]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
-    EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_spaceship], player_);
+    EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_end], player_);
     game_objects_.push_back(enemy2);
     game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player

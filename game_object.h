@@ -27,20 +27,24 @@ namespace game {
     // game object textures
     enum { 
         tex_purple_dragon = 0,
-        tex_runner_spaceship = 1,
-        tex_patrol_spaceship = 2,
-        tex_attacker_spaceship = 3,
-        tex_stars = 4,
-        tex_orb = 5,
-        tex_explosion = 6,
-        tex_blood_splatter = 7,
-        tex_star_collectible = 8,
-        tex_purple_dragon_invincible = 9,
-        tex_fireball = 10,
-        tex_attacker_bullet = 11,
-        tex_wave_bullet = 12,
-        tex_bomb = 13,
-        tex_font = 14
+        tex_runner_end = 1,
+        tex_runner_middle = 2,
+        tex_patrol_spaceship = 3,
+        tex_attacker_spaceship = 4,
+        tex_stars = 5,
+        tex_orb = 6,
+        tex_explosion = 7,
+        tex_blood_splatter = 8,
+        tex_star_collectible = 9,
+        tex_emp_ammo = 10,
+        tex_heart = 11,
+        tex_purple_dragon_invincible = 12,
+        tex_fireball = 13,
+        tex_attacker_bullet = 14,
+        tex_wave_bullet = 15,
+        tex_bomb = 16,
+        tex_emp_ring = 17,
+        tex_font = 18
     };
 
     // collision types
