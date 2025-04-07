@@ -60,6 +60,10 @@ namespace game {
             // Sprite geometry
             Geometry *sprite_;
 
+            Geometry* particles_;
+
+            Shader particle_shader_;
+
             // Shader for rendering sprites in the scene
             Shader sprite_shader_;
 

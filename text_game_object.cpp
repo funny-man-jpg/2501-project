@@ -6,7 +6,7 @@ namespace game {
 
 TextGameObject::TextGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture) : GameObject(position, geom, shader, texture) {
 
-    text_ = "";
+    text_ = "test";
 }
 
 

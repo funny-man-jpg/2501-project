@@ -25,6 +25,8 @@
 #include "runner_enemy_game_object.h"
 #include "text_game_object.h"
 #include "game.h"
+#include "particles.h"
+#include "particle_system.h"
 
 namespace game {
 
@@ -142,6 +144,11 @@ void Game::SetupGameWorld(void)
 
     game_objects_.push_back(background);
 
+    GameObject* particles = new ParticleSystem(glm::vec3(-0.5f, 0.0f, 0.0f), particles_, &particle_shader_, tex_[tex_orb], game_objects_[0]);
+    particles->SetScale(glm::vec2(0.2,0.2));
+    particles->SetRotation(-pi_over_two);
+    game_objects_.push_back(particles);
+
     //start the score timer
     score_timer_.Start(1.0);
 }
@@ -159,7 +166,7 @@ void Game::DestroyGameWorld(void)
 void Game::AddGameObject(GameObject* obj) {
     if (obj != nullptr) {
         // used cplusplus.com standard vector/insert documentation
-        game_objects_.insert(game_objects_.end() - 1, obj);
+        game_objects_.insert(game_objects_.end() - 2, obj);
     }
 }
 
@@ -223,6 +230,7 @@ void Game::Update(double delta_time)
 {
     // setup the counter
     int i = 0;
+    current_time_ += delta_time;
 
     //check the score timer
     if (score_timer_.Finished()) {
@@ -424,10 +432,17 @@ void Game::Init(void)
     sprite_ = new Sprite();
     sprite_->CreateGeometry();
 
+    Particles* particles_temp = new Particles();
+    particles_temp->CreateGeometry(4000); // Use 4000 particles
+    particles_ = particles_temp;
+
     // Initialize sprite shader
     sprite_shader_.Init((resources_directory_g+std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/sprite_fragment_shader.glsl")).c_str());
 
     text_shader_.Init((resources_directory_g + std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g + std::string("/text_fragment_shader.glsl")).c_str());
+
+    particle_shader_.Init((resources_directory_g + std::string("/particle_vertex_shader.glsl")).c_str(), (resources_directory_g + std::string("/particle_fragment_shader.glsl")).c_str());
+
 
     // Initialize time
     current_time_ = 0.0;
@@ -459,7 +474,7 @@ Game::~Game()
 
     // Free rendering resources
     delete sprite_;
-
+    delete particles_;
     // Close window
     glfwDestroyWindow(window_);
     glfwTerminate();
