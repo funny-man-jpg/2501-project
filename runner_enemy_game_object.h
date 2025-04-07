@@ -11,6 +11,7 @@ namespace game {
 
 			// handle shooting
 			virtual Projectile* Shoot(GLuint* textures);
+			void Update(double delta_time, GLuint* textures) override;
 	};
 }
 
