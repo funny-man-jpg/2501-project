@@ -22,8 +22,9 @@
 #define BLOOD_SPLATTER 5
 */
 
-// definition for the time between enemy spawns
+// definition for the times between spawns
 #define SPAWN_TIME 10
+#define COLLECTIBLE_SPAWN_TIME 7
 
 // definitions for random number bounds
 #define MAX_X 4000
@@ -86,6 +87,9 @@ namespace game {
 
             // a timer to track spawning times
             Timer *spawn_timer_;
+
+            // a timer to track invincibility collectible spawning times
+            Timer *invincibility_collectible_spawn_timer_;
             
             // a timer to track when to add to the score
             Timer score_timer_;
@@ -116,6 +120,9 @@ namespace game {
 
             // Load all textures
             void LoadTextures(std::vector<std::string> &textures);
+
+            // get a random position near to the player
+            glm::vec3 GetRandomPosition();
     }; // class Game
 
 } // namespace game

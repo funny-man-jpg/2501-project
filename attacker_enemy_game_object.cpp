@@ -71,5 +71,7 @@ namespace game {
 
 			t_ += delta_time;
 		}
+
+		GameObject::Update(delta_time, textures);
 	}
 }

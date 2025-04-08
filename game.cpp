@@ -300,30 +300,39 @@ void Game::Update(double delta_time)
         i++;
     }
 
-    // check for adding of new enemies
-    if (spawn_timer_->Finished() && !game_objects_[PLAYER]->GetExploding() && !game_over_) {
-        float x, y;
-
-        // get random position
-        // used w3schools C++ How To Generate Random Numbers
-        x = (float) (rand() % MAX_X) / DIVISOR;
-        y = (float) (rand() % MAX_Y) / DIVISOR;
-
-        if (rand() % 2) {
-            x = -x;
-        }
-
-        if (rand() % 2) {
-            y = -y;
-        }
-
+    // check for spawning of new game objects
+    if (!game_objects_[PLAYER]->GetExploding() && !game_over_) {
         // spawn attacker enemies
-        EnemyGameObject* new_enemy = new AttackerEnemyGameObject(glm::vec3(x, y, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
-        //new_enemy->SetTarget(player_);
-        AddGameObject(new_enemy);
+        if (spawn_timer_->Finished()) {
+            AddGameObject(new AttackerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_));
+            spawn_timer_->Start(SPAWN_TIME);
+        }
 
-        spawn_timer_->Start(SPAWN_TIME);
+        // spawn invincibility collectibles
+        if (invincibility_collectible_spawn_timer_->Finished()) {
+            AddGameObject(new CollectibleGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
+            invincibility_collectible_spawn_timer_->Start(COLLECTIBLE_SPAWN_TIME);
+        }
     }
+}
+
+glm::vec3 Game::GetRandomPosition() {
+    float x, y;
+
+    // get random position
+    // used w3schools C++ How To Generate Random Numbers
+    x = (float)(rand() % MAX_X) / DIVISOR;
+    y = (float)(rand() % MAX_Y) / DIVISOR;
+
+    if (rand() % 2) {
+        x = -x;
+    }
+
+    if (rand() % 2) {
+        y = -y;
+    }
+
+    return glm::vec3(x, y, 0.0f);
 }
 
 
@@ -464,9 +473,11 @@ void Game::Init(void)
     current_time_ = 0.0;
     start_time_ = 0.0;
 
-    // initialize spawn_timer_
+    // initialize spawning timers
     spawn_timer_ = new Timer();
     spawn_timer_->Start(SPAWN_TIME);
+    invincibility_collectible_spawn_timer_ = new Timer();
+    invincibility_collectible_spawn_timer_->Start(COLLECTIBLE_SPAWN_TIME);
 
     // make sure random numbers are different
     // used w3schools C++ How To Generate Random Numbers
