@@ -10,15 +10,24 @@ namespace game {
 	class RunnerEnemyGameObject : public EnemyGameObject {
 		public:
 			// Constructor
-			RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
+			RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int segments, bool head);
+			~RunnerEnemyGameObject();
 
 			// handle shooting
 			virtual Projectile* Shoot(GLuint* textures);
+
+			void Render(glm::mat4 view_matrix, double current_time) override;
+
+			void Render(glm::mat4 view_matrix, double current_time, glm::mat4 local);
 
 			void Update(double delta_time, GLuint* textures) override;
 
 			// drop collectibles
 			virtual CollectibleGameObject* DropCollectible(GLuint* textures);
+		private:
+			RunnerEnemyGameObject* child;
+			bool head;
+			int segments;
 	};
 }
 

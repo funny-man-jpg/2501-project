@@ -1,11 +1,22 @@
 #include "runner_enemy_game_object.h"
 #include "emp_battery_collectible.h"
 #include "bomb.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace game {
 	// Constructor
-	RunnerEnemyGameObject::RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
+	RunnerEnemyGameObject::RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int segments, bool head)
 		: EnemyGameObject(position, geom, shader, texture, target) {
+		this->head = head;
+		if (segments > 1) {
+			child = new RunnerEnemyGameObject(position, geom, shader, texture, target, segments - 1, false);
+		}
+		this->segments = segments;
+	}
+
+	RunnerEnemyGameObject::~RunnerEnemyGameObject()
+	{
+		delete child;
 	}
 
 	// handle shooting
@@ -66,5 +77,94 @@ namespace game {
 		}
 
 		EnemyGameObject::DropCollectible(textures);
+	}
+	void RunnerEnemyGameObject::Render(glm::mat4 view_matrix, double current_time) {
+
+		// Set up the shader
+		shader_->Enable();
+
+		// Tell the shader if ghost mode is on or off
+		shader_->SetUniform1i("ghost", ghost_);
+
+		// tell the shader how big the texture is
+		shader_->SetUniform1f("tex_size", tex_size_);
+
+		// Set up the view matrix
+		shader_->SetUniformMat4("view_matrix", view_matrix);
+
+		// Setup the scaling matrix for the shader
+		glm::mat4 scaling_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale_.x, scale_.y, 1.0));
+
+		// Setup the rotation matrix for the shader
+		glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle_, glm::vec3(0.0, 0.0, 1.0));
+
+		// Set up the translation matrix for the shader
+		glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), position_);
+
+		glm::mat4 global = translation_matrix * rotation_matrix;
+
+		// Setup the transformation matrix for the shader
+
+		glm::mat4 transformation_matrix = global * scaling_matrix;
+
+		if (segments > 1) {
+			child->Render(view_matrix, current_time, global);
+		}
+		// Set the transformation matrix in the shader
+		shader_->SetUniformMat4("transformation_matrix", transformation_matrix);
+
+		// Set up the geometry
+		geometry_->SetGeometry(shader_->GetShaderProgram());
+
+		// Bind the entity's texture
+		glBindTexture(GL_TEXTURE_2D, texture_);
+
+		// Draw the entity
+		glDrawElements(GL_TRIANGLES, geometry_->GetSize(), GL_UNSIGNED_INT, 0);
+	}
+	void RunnerEnemyGameObject::Render(glm::mat4 view_matrix, double current_time, glm::mat4 local)
+	{
+		// Set up the shader
+		shader_->Enable();
+
+		// Tell the shader if ghost mode is on or off
+		shader_->SetUniform1i("ghost", ghost_);
+
+		// tell the shader how big the texture is
+		shader_->SetUniform1f("tex_size", tex_size_);
+
+		// Set up the view matrix
+		shader_->SetUniformMat4("view_matrix", view_matrix);
+
+		// Setup the scaling matrix for the shader
+		glm::mat4 scaling_matrix = glm::scale(glm::mat4(1.0f), glm::vec3(scale_.x, scale_.y, 1.0));
+
+		// Setup the rotation matrix for the shader
+		glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle_, glm::vec3(0.0, 0.0, 1.0));
+
+		// Set up the translation matrix for the shader
+		glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), position_);
+
+		glm::mat4 local_transformation = local * translation_matrix * rotation_matrix;
+
+		// Setup the transformation matrix for the shader
+
+		glm::mat4 transformation_matrix = local_transformation * scaling_matrix;
+
+		if (segments > 1) {
+			child->Render(view_matrix, current_time, local_transformation);
+		}
+
+		// Set the transformation matrix in the shader
+		shader_->SetUniformMat4("transformation_matrix", transformation_matrix);
+
+		// Set up the geometry
+		geometry_->SetGeometry(shader_->GetShaderProgram());
+
+		// Bind the entity's texture
+		glBindTexture(GL_TEXTURE_2D, texture_);
+
+		// Draw the entitys
+		glDrawElements(GL_TRIANGLES, geometry_->GetSize(), GL_UNSIGNED_INT, 0);
 	}
 }
