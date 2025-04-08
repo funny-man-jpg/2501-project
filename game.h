@@ -8,6 +8,7 @@
 
 #include "shader.h"
 #include "game_object.h"
+#include "enemy_game_object.h"
 #include "player_game_object.h"
 
 // definition for the player's index in the game_objects_ vector
@@ -23,13 +24,18 @@
 */
 
 // definition for the times between spawns
-#define SPAWN_TIME 10
+#define ATTACKER_SPAWN_TIME 10
+#define PATROL_SPAWN_TIME 9
+#define RUNNER_SPAWN_TIME 12
 #define COLLECTIBLE_SPAWN_TIME 7
 
 // definitions for random number bounds
-#define MAX_X 4000
-#define MAX_Y 3000
+#define MAX_X 8000
+#define MAX_Y 6000
 #define DIVISOR 1000
+
+// definition for random angles
+#define MAX_DEGREES 360
 
 namespace game {
 
@@ -85,10 +91,10 @@ namespace game {
             double current_time_;
             double start_time_;
 
-            // a timer to track spawning times
-            Timer *spawn_timer_;
-
-            // a timer to track invincibility collectible spawning times
+            // timers to track spawning times
+            Timer *attacker_spawn_timer_;
+            Timer *patrol_spawn_timer_;
+            Timer *runner_spawn_timer_;
             Timer *invincibility_collectible_spawn_timer_;
             
             // a timer to track when to add to the score
@@ -123,6 +129,12 @@ namespace game {
 
             // get a random position near to the player
             glm::vec3 GetRandomPosition();
+
+            // get a random angle between 0 and 2*pi
+            float GetRandomAngle();
+
+            // create a new enemy
+            void SpawnNewEnemy(EnemyGameObject* enemy);
     }; // class Game
 
 } // namespace game

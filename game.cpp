@@ -169,6 +169,12 @@ void Game::DestroyGameWorld(void)
     for (int i = 0; i < game_objects_.size(); i++){
         delete game_objects_[i];
     }
+
+    // delete all timers
+    delete attacker_spawn_timer_;
+    delete patrol_spawn_timer_;
+    delete runner_spawn_timer_;
+    delete invincibility_collectible_spawn_timer_;
 }
 
 void Game::AddGameObject(GameObject* obj) {
@@ -303,9 +309,21 @@ void Game::Update(double delta_time)
     // check for spawning of new game objects
     if (!game_objects_[PLAYER]->GetExploding() && !game_over_) {
         // spawn attacker enemies
-        if (spawn_timer_->Finished()) {
-            AddGameObject(new AttackerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_));
-            spawn_timer_->Start(SPAWN_TIME);
+        if (attacker_spawn_timer_->Finished()) {
+            SpawnNewEnemy(new AttackerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_));
+            attacker_spawn_timer_->Start(ATTACKER_SPAWN_TIME);
+        }
+
+        // spawn patrol enemies
+        if (patrol_spawn_timer_->Finished()) {
+            SpawnNewEnemy(new PatrolEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_patrol_spaceship], player_));
+            patrol_spawn_timer_->Start(PATROL_SPAWN_TIME);
+        }
+
+        // spawn runner enemies
+        if (runner_spawn_timer_->Finished()) {
+            SpawnNewEnemy(new RunnerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_runner_end], player_));
+            runner_spawn_timer_->Start(RUNNER_SPAWN_TIME);
         }
 
         // spawn invincibility collectibles
@@ -314,6 +332,12 @@ void Game::Update(double delta_time)
             invincibility_collectible_spawn_timer_->Start(COLLECTIBLE_SPAWN_TIME);
         }
     }
+}
+
+// create a new enemy
+void Game::SpawnNewEnemy(EnemyGameObject* enemy) {
+    enemy->SetRotation(GetRandomAngle());
+    AddGameObject(enemy);
 }
 
 glm::vec3 Game::GetRandomPosition() {
@@ -332,7 +356,16 @@ glm::vec3 Game::GetRandomPosition() {
         y = -y;
     }
 
+    x += player_->GetPosition().x;
+    y += player_->GetPosition().y;
+
     return glm::vec3(x, y, 0.0f);
+}
+
+// get a random angle between 0 and 2*pi
+float Game::GetRandomAngle() {
+    // used google for the formula to convert degrees to radians
+    return (rand() % MAX_DEGREES) * (glm::pi<float>() / (float)MAX_DEGREES / 2.0f);
 }
 
 
@@ -474,9 +507,14 @@ void Game::Init(void)
     start_time_ = 0.0;
 
     // initialize spawning timers
-    spawn_timer_ = new Timer();
-    spawn_timer_->Start(SPAWN_TIME);
+    attacker_spawn_timer_ = new Timer();
+    patrol_spawn_timer_ = new Timer();
+    runner_spawn_timer_ = new Timer();
     invincibility_collectible_spawn_timer_ = new Timer();
+
+    attacker_spawn_timer_->Start(ATTACKER_SPAWN_TIME);
+    patrol_spawn_timer_->Start(PATROL_SPAWN_TIME);
+    runner_spawn_timer_->Start(RUNNER_SPAWN_TIME);
     invincibility_collectible_spawn_timer_->Start(COLLECTIBLE_SPAWN_TIME);
 
     // make sure random numbers are different
