@@ -4,6 +4,8 @@
 #include "game_object.h"
 // add the Projectile class header
 #include "projectile.h"
+// add the EmpRing header
+#include "emp_ring.h"
 
 // definitions for collectibles and invincibility
 #define INVINCIBILITY_LENGTH 10
@@ -18,7 +20,6 @@
 #define FIRING_COOLDOWN 3
 
 namespace game {
-
     // Inherits from GameObject
     class PlayerGameObject : public GameObject {
 
@@ -41,6 +42,9 @@ namespace game {
 
             // shooting function
             Projectile* Fire(GLuint tex);
+
+            // second weapon shooting function (emp ring)
+            EmpRing* EmpRingFire(GLuint tex);
 
         private:
             // a new attribute for the player's health

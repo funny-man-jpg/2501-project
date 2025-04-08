@@ -15,7 +15,7 @@ namespace game {
 	void Bomb::Update(double delta_time, GLuint* textures) {
 		if (timer_->Finished()) {
 			if (exploding_) {
-				delete_ == true;
+				delete_ = true;
 			}
 			else {
 				// change the explosion radius

@@ -38,6 +38,11 @@ namespace game {
 		target_ = player;
 	}
 
+	// change the direction the enemy is travelling in
+	void EnemyGameObject::SetVelocityDirection(glm::vec3 velocity) { 
+		velocity_ = (velocity / glm::length(velocity)) * speed_; 
+	}
+
 	// Update function for moving the enemy around
 	void EnemyGameObject::Update(double delta_time, GLuint* textures) {
 		// only update the position if still alive/not exploding
@@ -61,7 +66,7 @@ namespace game {
 	}
 
 	void EnemyGameObject::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == player || (other->GetType() == projectile && ((Projectile*) other)->GetTargetType() == enemy)) {
+		if (other->GetType() == player || (other->GetType() == projectile && ((Projectile*) other)->GetTargetType() == enemy) || other->GetType() == emp_ring) {
 			SetCollideability(false);
 			texture_ = textures[tex_explosion];
 			exploding_ = true;

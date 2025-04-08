@@ -32,6 +32,9 @@ namespace game {
 			// Setters
 			void SetTarget(PlayerGameObject* player);
 
+			// change the direction the enemy is travelling in
+			void SetVelocityDirection(glm::vec3 velocity);
+
 			// Update function for moving the enemy around
 			void Update(double delta_time, GLuint* textures) override;
 

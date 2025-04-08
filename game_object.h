@@ -23,7 +23,8 @@ namespace game {
         emp_battery_collectible = 3,
         enemy = 4,
         normal = 5,
-        projectile = 6
+        projectile = 6,
+        emp_ring = 7
     };
 
     // game object textures

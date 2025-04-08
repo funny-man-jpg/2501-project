@@ -226,6 +226,9 @@ void Game::HandleControls(double delta_time)
     if (glfwGetKey(window_, GLFW_KEY_SPACE) == GLFW_PRESS) {
         AddGameObject(player_->Fire(tex_[tex_fireball]));
     }
+    if (glfwGetKey(window_, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        AddGameObject(player_->EmpRingFire(tex_[tex_emp_ring]));
+    }
     /*
     if (glfwGetKey(window_, GLFW_KEY_Z) == GLFW_PRESS) {
         player->SetPosition(curpos - motion_increment*player->GetRight());
@@ -308,22 +311,24 @@ void Game::Update(double delta_time)
 
     // check for spawning of new game objects
     if (!game_objects_[PLAYER]->GetExploding() && !game_over_) {
+        float enemy_spawn_modifier = current_time_ / DIFFICULTY;
+
         // spawn attacker enemies
         if (attacker_spawn_timer_->Finished()) {
             SpawnNewEnemy(new AttackerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_));
-            attacker_spawn_timer_->Start(ATTACKER_SPAWN_TIME);
+            attacker_spawn_timer_->Start(glm::max(ATTACKER_SPAWN_TIME - enemy_spawn_modifier, (float) MIN_ENEMY_SPAWN_TIME));
         }
 
         // spawn patrol enemies
         if (patrol_spawn_timer_->Finished()) {
             SpawnNewEnemy(new PatrolEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_patrol_spaceship], player_));
-            patrol_spawn_timer_->Start(PATROL_SPAWN_TIME);
+            patrol_spawn_timer_->Start(glm::max(PATROL_SPAWN_TIME - enemy_spawn_modifier, (float) MIN_ENEMY_SPAWN_TIME));
         }
 
         // spawn runner enemies
         if (runner_spawn_timer_->Finished()) {
             SpawnNewEnemy(new RunnerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_runner_end], player_, 3, true));
-            runner_spawn_timer_->Start(RUNNER_SPAWN_TIME);
+            runner_spawn_timer_->Start(glm::max(RUNNER_SPAWN_TIME - enemy_spawn_modifier, (float) MIN_ENEMY_SPAWN_TIME));
         }
 
         // spawn invincibility collectibles
@@ -336,7 +341,9 @@ void Game::Update(double delta_time)
 
 // create a new enemy
 void Game::SpawnNewEnemy(EnemyGameObject* enemy) {
-    enemy->SetRotation(GetRandomAngle());
+    // point the enemy in a random direction
+    float angle = GetRandomAngle();
+    enemy->SetVelocityDirection(glm::vec3(glm::cos(angle), glm::sin(angle), 0.0f));
     AddGameObject(enemy);
 }
 
@@ -365,7 +372,7 @@ glm::vec3 Game::GetRandomPosition() {
 // get a random angle between 0 and 2*pi
 float Game::GetRandomAngle() {
     // used google for the formula to convert degrees to radians
-    return (rand() % MAX_DEGREES) * (glm::pi<float>() / (float)MAX_DEGREES / 2.0f);
+    return (rand() % MAX_DEGREES) * (glm::pi<float>() / ((float) MAX_DEGREES / 2.0f));
 }
 
 

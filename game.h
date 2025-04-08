@@ -27,7 +27,11 @@
 #define ATTACKER_SPAWN_TIME 10
 #define PATROL_SPAWN_TIME 9
 #define RUNNER_SPAWN_TIME 12
+#define MIN_ENEMY_SPAWN_TIME 3
 #define COLLECTIBLE_SPAWN_TIME 7
+
+// game difficulty (how quickly enemies spawn as time passes) (1 second spawning deduction at the rate specified (in secs))
+#define DIFFICULTY 30
 
 // definitions for random number bounds
 #define MAX_X 8000

@@ -106,6 +106,17 @@ Projectile* PlayerGameObject::Fire(GLuint tex) {
 	return nullptr;
 }
 
+// second weapon shooting function (emp ring)
+EmpRing* PlayerGameObject::EmpRingFire(GLuint tex) {
+	if (emp_battery_collected_ > 0) {
+		emp_battery_collected_--;
+
+		return new EmpRing(position_, geometry_, shader_, tex, this);
+	}
+
+	return nullptr;
+}
+
 // new function to handle the player collisions
 void PlayerGameObject::Hit(GLuint *textures, GameObject *other) {
 	// for colliding with EnemyGameObjects
