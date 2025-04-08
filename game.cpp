@@ -107,7 +107,7 @@ void Game::SetupGameWorld(void)
     game_objects_[1]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
-    EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_end], player_, 3, true);
+    EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_end], player_);
     game_objects_.push_back(enemy2);
     game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
@@ -327,7 +327,7 @@ void Game::Update(double delta_time)
 
         // spawn runner enemies
         if (runner_spawn_timer_->Finished()) {
-            SpawnNewEnemy(new RunnerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_runner_end], player_, 3, true));
+            SpawnNewEnemy(new RunnerEnemyGameObject(GetRandomPosition(), sprite_, &sprite_shader_, tex_[tex_runner_end], player_));
             runner_spawn_timer_->Start(glm::max(RUNNER_SPAWN_TIME - enemy_spawn_modifier, (float) MIN_ENEMY_SPAWN_TIME));
         }
 

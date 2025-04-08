@@ -10,8 +10,7 @@ namespace game {
 	class RunnerEnemyGameObject : public EnemyGameObject {
 		public:
 			// Constructor
-			RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int segments, bool head);
-			~RunnerEnemyGameObject();
+			RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
 
 			// handle shooting
 			virtual Projectile* Shoot(GLuint* textures);

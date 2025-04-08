@@ -5,20 +5,9 @@
 
 namespace game {
 	// Constructor
-	RunnerEnemyGameObject::RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int segments, bool head)
+	RunnerEnemyGameObject::RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: EnemyGameObject(position, geom, shader, texture, target) {
-		this->head = head;
-		if (segments > 1) {
-			child = new RunnerEnemyGameObject(position, geom, shader, texture, target, segments - 1, false);
-		}
-		this->segments = segments;
 	}
-
-	RunnerEnemyGameObject::~RunnerEnemyGameObject()
-	{
-		delete child;
-	}
-
 	// handle shooting
 	Projectile* RunnerEnemyGameObject::Shoot(GLuint* textures) {
 		// change to make sure player is behind (taken care of by checking that enemy is running away)
