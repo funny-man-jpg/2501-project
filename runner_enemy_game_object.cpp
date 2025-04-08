@@ -1,4 +1,5 @@
 #include "runner_enemy_game_object.h"
+#include "emp_battery_collectible.h"
 #include "bomb.h"
 
 namespace game {
@@ -56,5 +57,14 @@ namespace game {
 			velocity_ += steering_;
 		}
 		EnemyGameObject::Update(delta_time, textures);
+	}
+
+	// chance to return a collectible
+	CollectibleGameObject* RunnerEnemyGameObject::DropCollectible(GLuint* textures) {
+		if (rand() % EMP_AMMO_DROP_CHANCE == 0) {
+			return new EmpBatteryCollectible(position_, geometry_, shader_, textures[tex_emp_ammo]);
+		}
+
+		EnemyGameObject::DropCollectible(textures);
 	}
 }

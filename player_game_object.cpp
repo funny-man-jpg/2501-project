@@ -13,7 +13,9 @@ PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Sh
 	health_ = 3;
 
 	type_ = player;
-	collected_ = 0;
+
+	emp_battery_collected_ = 0;
+	invincibility_collected_ = 0;
 	invincible_timer_ = new Timer();
 	invincible_ = false;
 
@@ -118,14 +120,26 @@ void PlayerGameObject::Hit(GLuint *textures, GameObject *other) {
 		}
 	}
 	// for colliding with CollectibleGameObjects
-	else if (other->GetType() == collectible) {
-		collected_++;
+	else if (other->GetType() == invincibility_collectible) {
+		invincibility_collected_++;
 
-		if (collected_ == MAX_COLLECTIBLES) {
+		if (invincibility_collected_ == MAX_INVINCIBILITY_COLLECTIBLES) {
 			invincible_ = true;
-			collected_ = 0;
+			invincibility_collected_ = 0;
 			texture_ = textures[tex_purple_dragon_invincible];
 			invincible_timer_->Start(INVINCIBILITY_LENGTH);
+		}
+	}
+	// for colliding with HealthCollectibles
+	else if (other->GetType() == health_collectible) {
+		if (health_ < MAX_HEALTH) {
+			health_++;
+		}
+	}
+	// for colliding with EmpBatteryCollectibles
+	else if (other->GetType() == emp_battery_collectible) {
+		if (emp_battery_collected_ < MAX_EMP_BATTERY) {
+			emp_battery_collected_++;
 		}
 	}
 }

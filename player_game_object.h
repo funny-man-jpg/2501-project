@@ -7,7 +7,9 @@
 
 // definitions for collectibles and invincibility
 #define INVINCIBILITY_LENGTH 10
-#define MAX_COLLECTIBLES 5
+#define MAX_INVINCIBILITY_COLLECTIBLES 5
+#define MAX_HEALTH 3
+#define MAX_EMP_BATTERY 3
 
 // motion definitions
 #define MAX_VELOCITY 2
@@ -44,8 +46,9 @@ namespace game {
             // a new attribute for the player's health
             int health_;
 
-            // number of collectible objects collected
-            int collected_;
+            // number of non-health collectible objects collected
+            int invincibility_collected_;
+            int emp_battery_collected_;
 
             // whether the player is invincible at the moment or not
             bool invincible_;

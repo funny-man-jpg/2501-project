@@ -3,12 +3,16 @@
 
 #include "game_object.h"
 #include "player_game_object.h"
+#include "collectible_game_object.h"
 
 #define FULL_CIRCLE 2 * 3.14159265358979323
 #define RETARGET_LENGTH 2
 #define PURSUIT_CHANGE_DISTANCE 2.0
 #define CHASE_CHANGE_DISTANCE 1.5
 #define ENEMY_FIRING_COOLDOWN 5
+
+// definition for collectible drop rates
+#define DROP_CHANCE 3
 
 namespace game {
 	// enemy's different states
@@ -36,6 +40,9 @@ namespace game {
 
 			// handle shooting
 			virtual Projectile* Shoot(GLuint* textures) = 0;
+
+			// drop collectibles
+			virtual CollectibleGameObject* DropCollectible(GLuint *textures);
 
 		protected:
 			// enemy movement state

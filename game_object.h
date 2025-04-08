@@ -18,10 +18,12 @@ namespace game {
     // game object types
     enum {
         player = 0,
-        collectible = 1,
-        enemy = 2,
-        normal = 3,
-        projectile = 4
+        invincibility_collectible = 1,
+        health_collectible = 2,
+        emp_battery_collectible = 3,
+        enemy = 4,
+        normal = 5,
+        projectile = 6
     };
 
     // game object textures

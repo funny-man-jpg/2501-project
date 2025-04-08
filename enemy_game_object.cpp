@@ -1,4 +1,5 @@
 #include "enemy_game_object.h"
+#include "health_collectible.h"
 
 namespace game {
 	// Constructor
@@ -66,5 +67,14 @@ namespace game {
 			exploding_ = true;
 			timer_->Start(EXPLOSION_LENGTH);
 		}
+	}
+
+	// chance to return a collectible
+	CollectibleGameObject* EnemyGameObject::DropCollectible(GLuint* textures) {
+		if (rand() % DROP_CHANCE == 0) {
+			return new HealthCollectible(position_, geometry_, shader_, textures[tex_heart]);
+		}
+
+		return nullptr;
 	}
 }

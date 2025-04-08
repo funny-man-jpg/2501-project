@@ -13,8 +13,10 @@
 #include "sprite.h"
 #include "shader.h"
 #include "player_game_object.h"
-// add the collectible game object header
+// add the collectible headers
 #include "collectible_game_object.h"
+#include "emp_battery_collectible.h"
+#include "health_collectible.h"
 // add the enemy game object header
 #include "enemy_game_object.h"
 // add the Projectile class header
@@ -122,9 +124,9 @@ void Game::SetupGameWorld(void)
     //enemy4->SetTarget(player_);
 
     // Setup collectible objects
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(-2.6f, 1.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
-    game_objects_.push_back(new CollectibleGameObject(glm::vec3(4.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
+    game_objects_.push_back(new HealthCollectible(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_heart]));
+    game_objects_.push_back(new HealthCollectible(glm::vec3(-2.6f, 1.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_heart]));
+    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(4.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
     game_objects_.push_back(new CollectibleGameObject(glm::vec3(-4.7f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
     game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.5f, -1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
 
@@ -258,6 +260,10 @@ void Game::Update(double delta_time)
             // if the deleted object is the player, game is over
             if (current_game_object->GetType() == player) {
                 game_over_ = true;
+            }
+            // if the deleted object is an enemy, have a chance to drop a collectible
+            if (current_game_object->GetType() == enemy) {
+                AddGameObject(((EnemyGameObject*) current_game_object)->DropCollectible(tex_));
             }
 
             delete current_game_object;

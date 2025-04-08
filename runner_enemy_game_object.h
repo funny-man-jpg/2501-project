@@ -3,6 +3,9 @@
 
 #include "enemy_game_object.h"
 
+// emp ammo drop rate
+#define EMP_AMMO_DROP_CHANCE 2
+
 namespace game {
 	class RunnerEnemyGameObject : public EnemyGameObject {
 		public:
@@ -11,7 +14,11 @@ namespace game {
 
 			// handle shooting
 			virtual Projectile* Shoot(GLuint* textures);
+
 			void Update(double delta_time, GLuint* textures) override;
+
+			// drop collectibles
+			virtual CollectibleGameObject* DropCollectible(GLuint* textures);
 	};
 }
 
