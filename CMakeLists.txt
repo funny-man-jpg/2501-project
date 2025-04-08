@@ -15,8 +15,10 @@ set(HDRS
     sprite.h
     # add the timer class
     timer.h
-    # add collectible game object class
+    # add collectible classes
     collectible_game_object.h
+    health_collectible.h
+    emp_battery_collectible.h
     # add enemy game object class
     enemy_game_object.h
     # add projectile classes
@@ -42,8 +44,10 @@ set(SRCS
     sprite.cpp
     # add the timer class
     timer.cpp
-    # add collectible game object class
+    # add collectible classes
     collectible_game_object.cpp
+    health_collectible.cpp
+    emp_battery_collectible.cpp
     # add enemy game object class
     enemy_game_object.cpp
     # add projectile classes

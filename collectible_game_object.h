@@ -7,11 +7,11 @@ namespace game {
 	// new class for collectible game objects
 	class CollectibleGameObject : public GameObject {
 		public:
-			// Constructor and Deconstructor
+			// Constructor
 			CollectibleGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture);
 
 			// handle collisions
-			void Hit(GLuint *textures, GameObject *other) override;
+			virtual void Hit(GLuint *textures, GameObject *other) override;
 	};
 }
 
