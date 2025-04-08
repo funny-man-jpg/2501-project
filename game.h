@@ -61,6 +61,7 @@ namespace game {
             Geometry *sprite_;
 
             Geometry* particles_;
+            Geometry* explosion_;
 
             Shader particle_shader_;
 

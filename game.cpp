@@ -144,11 +144,17 @@ void Game::SetupGameWorld(void)
 
     game_objects_.push_back(background);
 
-    GameObject* particles = new ParticleSystem(glm::vec3(-0.5f, 0.0f, 0.0f), particles_, &particle_shader_, tex_[tex_orb], game_objects_[0]);
+    //particles for the flame trail
+    GameObject* particles = new ParticleSystem(glm::vec3(-0.5f, 0.0f, 0.0f), particles_, &particle_shader_, tex_[tex_orb], game_objects_[0], false);
     particles->SetScale(glm::vec2(0.2,0.2));
     particles->SetRotation(-pi_over_two);
     game_objects_.push_back(particles);
 
+    //particles for the explostion
+    GameObject* explosion = new ParticleSystem(glm::vec3(-0.5f, 0.0f, 0.0f), explosion_, &particle_shader_, tex_[tex_orb], game_objects_[0], true);
+    explosion->SetScale(glm::vec2(0.2, 0.2));
+    explosion->SetRotation(-pi_over_two);
+    game_objects_.push_back(explosion);
     //start the score timer
     score_timer_.Start(1.0);
 }
@@ -166,7 +172,7 @@ void Game::DestroyGameWorld(void)
 void Game::AddGameObject(GameObject* obj) {
     if (obj != nullptr) {
         // used cplusplus.com standard vector/insert documentation
-        game_objects_.insert(game_objects_.end() - 2, obj);
+        game_objects_.insert(game_objects_.end() - 3, obj);
     }
 }
 
@@ -432,9 +438,13 @@ void Game::Init(void)
     sprite_ = new Sprite();
     sprite_->CreateGeometry();
 
-    Particles* particles_temp = new Particles();
+    Particles* particles_temp = new Particles(false);
     particles_temp->CreateGeometry(4000); // Use 4000 particles
     particles_ = particles_temp;
+
+    Particles* explostion_temp = new Particles(true);
+    explostion_temp->CreateGeometry(4000); // Use 4000 particles
+    explosion_ = explostion_temp;
 
     // Initialize sprite shader
     sprite_shader_.Init((resources_directory_g+std::string("/sprite_vertex_shader.glsl")).c_str(), (resources_directory_g+std::string("/sprite_fragment_shader.glsl")).c_str());
@@ -475,6 +485,7 @@ Game::~Game()
     // Free rendering resources
     delete sprite_;
     delete particles_;
+    delete explosion_;
     // Close window
     glfwDestroyWindow(window_);
     glfwTerminate();

@@ -6,10 +6,14 @@
 
 namespace game {
 
-ParticleSystem::ParticleSystem(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GameObject *parent)
+ParticleSystem::ParticleSystem(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture, GameObject *parent, bool expl)
 	: GameObject(position, geom, shader, texture){
 
     parent_ = parent;
+    explosion = expl;
+    if (expl == true) {
+        test = "exploder";
+    }
 }
 
 
@@ -21,8 +25,9 @@ void ParticleSystem::Update(double delta_time, GLuint* textures) {
 
 
 void ParticleSystem::Render(glm::mat4 view_matrix, double current_time){
-
-    // Set up the shader
+    if ((explosion && !parent_->GetExploding()) || (!explosion && parent_->GetExploding())) {
+        return; 
+    }
     shader_->Enable();
 
     // Set up the view matrix
@@ -59,6 +64,8 @@ void ParticleSystem::Render(glm::mat4 view_matrix, double current_time){
 
     // Draw the entity
     glDrawElements(GL_TRIANGLES, geometry_->GetSize(), GL_UNSIGNED_INT, 0);
+    
+
 }
 
 } // namespace game

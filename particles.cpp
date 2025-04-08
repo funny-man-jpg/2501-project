@@ -6,12 +6,13 @@
 
 namespace game {
 
-Particles::Particles(void) : Geometry()
+Particles::Particles(bool expl) : Geometry()
 {
     // Initialize variables with default values
     vbo_ = 0;
     ebo_ = 0;
     size_ = 0;
+    explode = expl;
 }
 
 
@@ -63,7 +64,13 @@ void Particles::CreateGeometry(int num_particles)
             // Se above for definition of rand_num()
             //
             // Opening of the stream of particles
-            theta = (2.0*rand_num() -1.0f)*0.13f + pi;
+            if (explode == false) {
+                theta = (2.0 * rand_num() - 1.0f) * 0.13f + pi;
+            }
+            else {
+                theta = two_pi * rand_num();
+            }
+            
             //theta = two_pi*rand_num();
             // Radius (length) of the stream
             r = 0.0f + 0.8*rand_num();

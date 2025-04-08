@@ -9,13 +9,15 @@ namespace game {
     class Particles : public Geometry {
 
         public:
-            Particles(void);
+            Particles(bool expl);
 
             // Create the geometry (called once)
             void CreateGeometry(int num_particles);
 
             // Use the geometry
             void SetGeometry(GLuint shader_program);
+        private:
+            bool explode;
 
     }; // class Particles
 } // namespace game
