@@ -29,6 +29,7 @@ set(HDRS
     attacker_enemy_game_object.h
     patrol_enemy_game_object.h
     runner_enemy_game_object.h
+    boss_enemy_game_object.h
     # add the class for the player's second weapon
     emp_ring.h
     text_game_object.h
@@ -60,6 +61,7 @@ set(SRCS
     attacker_enemy_game_object.cpp
     patrol_enemy_game_object.cpp
     runner_enemy_game_object.cpp
+    boss_enemy_game_object.cpp
     # add the class for the player's second weapon
     emp_ring.cpp
     text_game_object.cpp
