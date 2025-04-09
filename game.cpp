@@ -105,26 +105,26 @@ void Game::SetupGameWorld(void)
     // Setup other objects
     EnemyGameObject *enemy1 = new PatrolEnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_patrol_spaceship], player_);
     game_objects_.push_back(enemy1);
-    game_objects_[1]->SetRotation(pi_over_two);
+    game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
     EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_end], player_);
     game_objects_.push_back(enemy2);
-    game_objects_[2]->SetRotation(pi_over_two);
+    game_objects_[3]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy2->SetTarget(player_);
     EnemyGameObject* enemy3 = new AttackerEnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy3);
-    game_objects_[3]->SetRotation(pi_over_two);
+    game_objects_[4]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy3->SetTarget(player_);
     EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy4);
-    game_objects_[4]->SetRotation(pi_over_two);
+    game_objects_[5]->SetRotation(pi_over_two);
     EnemyGameObject* enemy5 = new BossEnemyObject(glm::vec3(2.2f, 3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy5);
-    game_objects_[5]->SetRotation(pi_over_two);
-    game_objects_[5]->SetScale(glm::vec2(5,5));
+    game_objects_[6]->SetRotation(pi_over_two);
+    game_objects_[6]->SetScale(glm::vec2(5,5));
     // give the enemy a reference to the player
     //enemy4->SetTarget(player_);
 

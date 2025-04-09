@@ -31,6 +31,7 @@ namespace game {
 			// handle shooting
 			virtual std::vector<Projectile*>* Shoot(GLuint* textures);
 			void Update(double delta_time, GLuint* textures) override;
+			void Render(glm::mat4 view_matrix, double current_time) override;
 		private:
 			BossPart* base_part_;
 			BossPart* gun_arm_;
