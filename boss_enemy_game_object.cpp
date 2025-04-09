@@ -6,28 +6,17 @@ namespace game {
 	BossEnemyObject::BossEnemyObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: EnemyGameObject(position, geom, shader, texture, target) {
 		float pi_over_two = glm::pi<float>() / 2.0f;
-		base_part_ = new BossPart(position, geom, shader, texture, target);
-		gun_arm_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target);
-		barrel_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target);
+		base_part_ = new BossPart(position, geom, shader, texture, target, 1);
+		gun_arm_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target, 2);
+		barrel_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target, 3);
 		base_part_->AddChild(gun_arm_);
 		gun_arm_->AddChild(barrel_);
 	}
 
 	// handle shooting
 	std::vector<Projectile*>* BossEnemyObject::Shoot(GLuint* textures) {
-		std::vector<Projectile*>* vec = new std::vector<Projectile*>;
-
-		// check if close enough to player (we are always chasing so wanna make sure that we arent shooting from 50 miles off the screen)
-		// change to make sure player is in front as well (taken care of by checking that enemy is in pursuit/intercept)
-		if (firing_timer_->Finished() && glm::length(target_->GetPosition() - position_) <= SHOOTING_RANGE && !exploding_ 
-			&& (state_ == pursuit || state_ == intercepting) && !target_->GetExploding()) {
-			firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
-
-			// fire a basic projectile
-			vec->push_back(new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player));
-		}
 		
-		return vec;
+		return barrel_->Shoot(textures);
 	}
 	void BossEnemyObject::Update(double delta_time, GLuint* textures)
 	{
@@ -42,18 +31,35 @@ namespace game {
 	}
 
 
-BossPart::BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, BossPart* parent)
+	BossPart::BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int type, BossPart* parent)
 	: EnemyGameObject(position, geom, shader, texture, target)
 {
 	parent_ = parent;
+	partType = type;
 }
 void BossPart::Update(double delta_time, GLuint* textures) {
 	// Track the player
 	glm::vec3 direction_to_player = glm::normalize(target_->GetPosition() - glm::vec3(world_transform_[3]));
-	if (parent_) {
+	if (partType == 2) {
 		//direction_to_player = glm::normalize(target_->GetPosition() - parent_->position_);
-		angle_ = atan2(direction_to_player.y, direction_to_player.x) - glm::half_pi<float>();
+		//angle_ = atan2(direction_to_player.y, direction_to_player.x) - glm::half_pi<float>();
+		glm::vec3 world_pos = glm::vec3(world_transform_[3]);
+		glm::vec3 to_player = glm::normalize(target_->GetPosition() - world_pos);
 
+		float full_angle = atan2(to_player.y, to_player.x);
+
+		angle_ = 0.7f * full_angle;
+
+	}
+	else if (partType == 3) {
+		glm::vec3 world_pos = glm::vec3(world_transform_[3]);
+		glm::vec3 to_player = glm::normalize(target_->GetPosition() - world_pos);
+
+		float full_angle = atan2(to_player.y, to_player.x);
+
+		float parent_angle = atan2(parent_->world_transform_[0][1], parent_->world_transform_[0][0]);
+
+		angle_ = full_angle - parent_angle;
 	}
 	else {
 		scale_ = glm::vec2(5, 5);
@@ -84,12 +90,14 @@ std::vector<Projectile*>* BossPart::Shoot(GLuint* textures) {
 
 	// check if close enough to player (we are always chasing so wanna make sure that we arent shooting from 50 miles off the screen)
 	// change to make sure player is in front as well (taken care of by checking that enemy is in pursuit/intercept)
-	if (firing_timer_->Finished() && glm::length(target_->GetPosition() - position_) <= SHOOTING_RANGE && !exploding_
-		&& (state_ == pursuit || state_ == intercepting) && !target_->GetExploding()) {
+	if (firing_timer_->Finished() && glm::length(target_->GetPosition() - glm::vec3(world_transform_[3])) <= SHOOTING_RANGE && !exploding_
+		&& !target_->GetExploding()) {
 		firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
+		//glm::vec3 dir = glm::vec3(glm::normalize(glm::vec2(world_transform_[0][0], world_transform_[1][0])), 0);
+
 
 		// fire a basic projectile
-		vec->push_back(new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player));
+		vec->push_back(new Projectile(glm::vec3(world_transform_[3]) + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player));
 	}
 
 	return vec;

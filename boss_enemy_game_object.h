@@ -4,13 +4,13 @@
 #include "enemy_game_object.h"
 #include<vector>
 
-#define SHOOTING_RANGE 5.0
+#define SHOOTING_RANGE 8.0
 
 namespace game {
 
 	class BossPart : public EnemyGameObject {
 	public:
-		BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, BossPart* parent = nullptr);
+		BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int type, BossPart* parent = nullptr);
 
 		glm::mat4 local_transform_;
 		glm::mat4 world_transform_;
@@ -20,6 +20,8 @@ namespace game {
 		void Render(glm::mat4 view_matrix, double current_time) override;
 		virtual std::vector<Projectile*>* Shoot(GLuint* textures);
 		void AddChild(BossPart* child);
+	private:
+		int partType;
 	};
 
 
