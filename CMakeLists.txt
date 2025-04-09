@@ -13,6 +13,8 @@ set(HDRS
     shader.h
     geometry.h
     sprite.h
+    # add the hud class
+    hud.h
     # add the timer class
     timer.h
     # add collectible classes
@@ -45,6 +47,8 @@ set(SRCS
     player_game_object.cpp
     shader.cpp
     sprite.cpp
+    # add the hud class
+    hud.cpp
     # add the timer class
     timer.cpp
     # add collectible classes

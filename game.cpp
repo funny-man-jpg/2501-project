@@ -13,6 +13,8 @@
 #include "sprite.h"
 #include "shader.h"
 #include "player_game_object.h"
+// add hud header
+#include "hud.h"
 // add the collectible headers
 #include "collectible_game_object.h"
 #include "emp_battery_collectible.h"
@@ -97,6 +99,9 @@ void Game::SetupGameWorld(void)
     game_objects_.push_back(player_);
     float pi_over_two = glm::pi<float>() / 2.0f;
     game_objects_[0]->SetRotation(pi_over_two);
+
+    // add the hud
+    game_objects_.push_back(new HUD(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_purple_dragon], tex_[tex_heart], tex_[tex_emp_ammo], player_));
 
     TextGameObject *text = new TextGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
     text->SetText("Score: " + score_);

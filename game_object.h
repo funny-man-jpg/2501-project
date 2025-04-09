@@ -102,6 +102,9 @@ namespace game {
             // new Setter to set whether the game object can be collided with or not
             void SetCollideability(bool collideable);
 
+            // toggle on and off ghost mode
+            void SetGhost(bool ghost) { ghost_ = ghost; }
+
             // new function that handles the collision of a game object
             virtual void Hit(GLuint *textures, GameObject *other);
 
