@@ -1,9 +1,11 @@
 #include "attacker_enemy_game_object.h"
+#include <glm/gtc/constants.hpp>
 
 namespace game {
 	// Constructor
 	AttackerEnemyGameObject::AttackerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: EnemyGameObject(position, geom, shader, texture, target) {
+		intercept = false;
 	}
 
 	// handle shooting
@@ -32,7 +34,7 @@ namespace game {
 				if (retarget_->Finished()) {
 					// Random point in angle opening
 					float r_num = ((float)rand()) / ((float)RAND_MAX);
-					float opening = 5.0 * 3.141592 / 180.0; // Add PI from the glm library
+					float opening = 5.0 * glm::pi<float>() / 180.0;
 					float r_angle = r_num * 2.0 * opening + angle_ - opening;
 					float r = 0.25;
 					glm::vec3 target(r * cos(r_angle), r * sin(r_angle), 0.0);
@@ -47,10 +49,17 @@ namespace game {
 				}
 
 			}
-			// if intercepting, chase the player
+			// if intercepting, orbit the player
 			else if (state_ == intercepting && !exploding_) {
+				if (intercept == false) {
+					intercept = true;
+					glm::vec3 direction_to_player = target_->GetPosition() - position_;
+					float angle_to_player = glm::atan(direction_to_player.y, direction_to_player.x);
+					t_ = angle_to_player/(FULL_CIRCLE * rps_);
+				}
 				double rads = t_ * FULL_CIRCLE * rps_;
 				position_ = glm::vec3(2 * cos(rads) + target_->GetPosition().x, 2 * sin(rads) + target_->GetPosition().y, 0.0);
+				t_ += delta_time;
 			}
 			if (!exploding_) {
 				glm::vec3 prev_position = position_;
@@ -71,7 +80,7 @@ namespace game {
 
 				SetRotation(angle);
 
-				t_ += delta_time;
+				//t_ += delta_time;
 			}
 		}
 

@@ -265,7 +265,7 @@ void Game::Update(double delta_time)
     current_time_ += delta_time;
 
     //check the score timer
-    if (score_timer_.Finished()) {
+    if (score_timer_.Finished() && !game_objects_[PLAYER]->GetExploding()) {
         (*score_)++;
         score_timer_.Start(1.0);
     }

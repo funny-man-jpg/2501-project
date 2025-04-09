@@ -15,6 +15,8 @@ namespace game {
 			virtual std::vector<Projectile*>* Shoot(GLuint* textures);
 
 			void Update(double delta_time, GLuint* textures) override;
+		private:
+			bool intercept;
 	};
 }
 

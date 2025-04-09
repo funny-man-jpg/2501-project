@@ -39,7 +39,7 @@ namespace game {
 				if (retarget_->Finished()) {
 					// Random point in angle opening
 					float r_num = ((float)rand()) / ((float)RAND_MAX);
-					float opening = 5.0 * 3.141592 / 180.0; // Add PI from the glm library
+					float opening = 5.0 * glm::pi<float>() / 180.0;
 					float r_angle = r_num * 2.0 * opening + angle_ - opening;
 					float r = 0.25;
 					glm::vec3 target(r * cos(r_angle), r * sin(r_angle), 0.0);
@@ -60,6 +60,11 @@ namespace game {
 				steering_ /= glm::length(steering_);
 				steering_ *= 0.001;
 				velocity_ += steering_;
+				float mag = glm::length(velocity_);
+				if (mag > 2.5f) {
+					velocity_.x = (velocity_.x / mag) * 2.0f;
+					velocity_.y = (velocity_.y / mag) * 2.0f;
+				}
 			}
 		}
 

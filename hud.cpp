@@ -31,7 +31,7 @@ namespace game {
 		score_display_->SetRotation(0.0f);
 		score_display_->SetScale(glm::vec2(4.0f, 0.75f));
 		//std::string int_to_string = (std::string)some_int;
-		score_display_->SetText("Score: " + some_int);//*score_);
+		score_display_->SetText("Score:" + std::to_string(*score_));
 	}
 
 	HUD::~HUD() {
@@ -80,7 +80,7 @@ namespace game {
 
 		// update score display
 		score_display_->SetPosition(player_->GetPosition() + glm::vec3(0.0f, Y_SCORE, Z));
-		score_display_->SetText("Score: " + some_int);//*score_);
+		score_display_->SetText("Score: " + std::to_string(*score_));
 	}
 
 	void HUD::Render(glm::mat4 view_matrix, double current_time) {
