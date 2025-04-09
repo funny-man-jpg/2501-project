@@ -4,6 +4,7 @@ namespace game {
 	// Constructor
 	WaveProjectile::WaveProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction, int target_type, bool right)
 		: Projectile(position, geom, shader, texture, direction, target_type) {
+
 		// set the collision type to circle circle
 		collision_type_ = circle;
 
@@ -15,6 +16,9 @@ namespace game {
 
 		// change the scale
 		scale_ = glm::vec2(0.25f);
+
+		// change radius to be smaller
+		radius_ = 0.3f;
 
 		// set the up direction
 		if (right) {

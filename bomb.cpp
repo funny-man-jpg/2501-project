@@ -8,7 +8,9 @@ namespace game {
 		collision_type_ = circle;
 
 		// change the scale
-		scale_ = glm::vec2(0.25f);
+		scale_ = glm::vec2(0.75f, 0.5f);
+
+		radius_ = 0.9f;
 	}
 
 	// Update function for moving the projectile
@@ -18,17 +20,8 @@ namespace game {
 				delete_ = true;
 			}
 			else {
-				// change the explosion radius
-				radius_ = 0.5;
-
-				// check if explosion hits player (not working)
-				//CheckForCollision(textures, enemy_);
-
 				// make sure to explode
 				if (!exploding_) {
-					// doesnt work
-					//Hit(textures, enemy_);
-
 					SetCollideability(false);
 					texture_ = textures[tex_explosion];
 					exploding_ = true;
@@ -52,7 +45,7 @@ namespace game {
 			SetCollideability(false);
 			texture_ = textures[tex_explosion];
 			exploding_ = true;
-			scale_ = glm::vec2(1.25f);
+			scale_ = glm::vec2(2.0f);
 			timer_->Start(EXPLOSION_LENGTH);
 		}
 	}

@@ -38,7 +38,7 @@ namespace game {
 		if (!exploding_) {
 			float new_x = position_.x + velocity_.x * delta_time;
 			float new_y = position_.y + velocity_.y * delta_time;
-			position_ = glm::vec3(new_x, new_y, -1.0);
+			position_ = glm::vec3(new_x, new_y, Z);
 		}
 		else {
 			if (collideable_) {
@@ -55,6 +55,9 @@ namespace game {
 	void Projectile::CheckForCollision(GLuint *textures, GameObject *other) {
 		// do ray circle collision
 		if (other->GetType() == target_type_ || (other->GetType() == emp_ring && target_type_ == player)) {
+			// change the position's z value for collision detection only
+			position_.z = 0.0f;
+
 			// calculate the intersection times
 			glm::vec3 d = this->GetBearing();
 			glm::vec3 circlePartToRayPart = this->position_ - other->GetPosition();
@@ -78,6 +81,9 @@ namespace game {
 				impact_time_ = soonerTime;
 				this->Hit(textures, other);
 			}
+
+			// make sure to change the z value back
+			position_.z = Z;
 		}
 	}
 
