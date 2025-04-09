@@ -5,6 +5,8 @@ namespace game {
 	// Constructor
 	PatrolEnemyGameObject::PatrolEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: EnemyGameObject(position, geom, shader, texture, target) {
+
+		score_value_ = 10;
 	}
 
 	// handle shooting

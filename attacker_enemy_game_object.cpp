@@ -4,6 +4,7 @@ namespace game {
 	// Constructor
 	AttackerEnemyGameObject::AttackerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target)
 		: EnemyGameObject(position, geom, shader, texture, target) {
+		score_value_ = 5;
 	}
 
 	// handle shooting

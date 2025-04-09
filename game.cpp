@@ -296,6 +296,16 @@ void Game::Update(double delta_time)
             game_objects_.erase(game_objects_.begin() + i);
             continue;
         }
+        else if (current_game_object->GetExploding()) {
+            if (current_game_object->GetType() == enemy) {
+                EnemyGameObject *enemy = (EnemyGameObject*) current_game_object;
+
+                if (!enemy->GetValueCounted()) {
+                    *score_ += enemy->GetScoreValue();
+                    enemy->SetValueCounted(true);
+                }
+            }
+        }
 
         // Check for collision with other game objects
         // Note the loop bounds: we avoid testing the last object since

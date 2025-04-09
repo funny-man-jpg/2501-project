@@ -11,6 +11,8 @@ namespace game {
 		barrel_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target, 3);
 		base_part_->AddChild(gun_arm_);
 		gun_arm_->AddChild(barrel_);
+
+		score_value_ = 250;
 	}
 
 	// handle shooting
