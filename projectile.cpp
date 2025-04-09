@@ -38,7 +38,7 @@ namespace game {
 		if (!exploding_) {
 			float new_x = position_.x + velocity_.x * delta_time;
 			float new_y = position_.y + velocity_.y * delta_time;
-			position_ = glm::vec3(new_x, new_y, 0.0);
+			position_ = glm::vec3(new_x, new_y, -1.0);
 		}
 		else {
 			if (collideable_) {

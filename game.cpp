@@ -126,15 +126,7 @@ void Game::SetupGameWorld(void)
     // Setup collectible objects
     game_objects_.push_back(new HealthCollectible(glm::vec3(-3.0f, -2.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_heart]));
     game_objects_.push_back(new HealthCollectible(glm::vec3(-2.6f, 1.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_heart]));
-
     game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(4.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(5.0f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(5.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(6.0f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(6.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(7.0f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-    game_objects_.push_back(new EmpBatteryCollectible(glm::vec3(7.5f, 1.2f, 0.0f), sprite_, &sprite_shader_, tex_[tex_emp_ammo]));
-
     game_objects_.push_back(new CollectibleGameObject(glm::vec3(-4.7f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
     game_objects_.push_back(new CollectibleGameObject(glm::vec3(2.5f, -1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_star_collectible]));
 
@@ -308,9 +300,13 @@ void Game::Update(double delta_time)
 
         // check for firing
         if (current_game_object->GetType() == enemy) {
-            EnemyGameObject* curr_enemy = (EnemyGameObject*) current_game_object;
+            std::vector<Projectile*>* vec = ((EnemyGameObject*) current_game_object)->Shoot(tex_);
 
-            AddGameObject(curr_enemy->Shoot(tex_));
+            for (int i = 0; i < vec->size(); i++) {
+                AddGameObject((*vec)[i]);
+            }
+
+            delete vec;
         }
 
         // increment the counter

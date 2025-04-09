@@ -1,20 +1,28 @@
 #include "wave_projectile.h"
-
+#include <iostream>
 namespace game {
 	// Constructor
-	WaveProjectile::WaveProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction, int target_type)
+	WaveProjectile::WaveProjectile(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, glm::vec3 direction, int target_type, bool right)
 		: Projectile(position, geom, shader, texture, direction, target_type) {
 		// set the collision type to circle circle
 		collision_type_ = circle;
 
 		// make the projectile slow
-		speed_ = 1.5f;
+		speed_ = 2.5f;
 
 		// set culmulative time to 0
 		culmulative_time_ = 0;
 
 		// change the scale
 		scale_ = glm::vec2(0.25f);
+
+		// set the up direction
+		if (right) {
+			up_direction_ = GetRight();
+		}
+		else {
+			up_direction_ = -GetRight();
+		}
 	}
 
 	// Update function for moving the projectile
@@ -27,10 +35,10 @@ namespace game {
 			forwards = forwards / glm::length(forwards);
 			position_ += forwards * speed_ * (float)delta_time;
 
-			// move up and down based on the sine function (doesnt work rn, moves up and down wayyyy too much)
-			glm::vec3 up = -GetRight();
+			// move up and down based on the sine function
+			glm::vec3 up = up_direction_;
 			up = up / glm::length(up);
-			up = up * (float)glm::sin(culmulative_time_ * speed_) * radius_;
+			up = up * (float)glm::sin(culmulative_time_ * speed_) * SINE_WAVE_HEIGHT;
 			position_ += up;
 		}
 

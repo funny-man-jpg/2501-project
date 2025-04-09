@@ -1,6 +1,7 @@
 #ifndef ENEMY_GAME_OBJECT_H_
 #define ENEMY_GAME_OBJECT_H_
 
+#include <vector>
 #include "game_object.h"
 #include "player_game_object.h"
 #include "collectible_game_object.h"
@@ -46,7 +47,7 @@ namespace game {
 			void Hit(GLuint* textures, GameObject* other) override;
 
 			// handle shooting
-			virtual Projectile* Shoot(GLuint* textures) = 0;
+			virtual std::vector<Projectile*>* Shoot(GLuint* textures) = 0;
 
 			// drop collectibles
 			virtual CollectibleGameObject* DropCollectible(GLuint *textures);

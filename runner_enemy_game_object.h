@@ -13,7 +13,7 @@ namespace game {
 			RunnerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
 
 			// handle shooting
-			virtual Projectile* Shoot(GLuint* textures);
+			virtual std::vector<Projectile*>* Shoot(GLuint* textures);
 
 			void Render(glm::mat4 view_matrix, double current_time) override;
 

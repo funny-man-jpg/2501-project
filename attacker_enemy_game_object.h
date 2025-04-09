@@ -12,7 +12,8 @@ namespace game {
 			AttackerEnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
 
 			// handle shooting
-			virtual Projectile* Shoot(GLuint* textures);
+			virtual std::vector<Projectile*>* Shoot(GLuint* textures);
+
 			void Update(double delta_time, GLuint* textures) override;
 	};
 }

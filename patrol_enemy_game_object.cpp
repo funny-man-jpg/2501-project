@@ -8,16 +8,19 @@ namespace game {
 	}
 
 	// handle shooting
-	Projectile* PatrolEnemyGameObject::Shoot(GLuint* textures) {
+	std::vector<Projectile*>* PatrolEnemyGameObject::Shoot(GLuint* textures) {
+		std::vector<Projectile*>* vec = new std::vector<Projectile*>;
+
 		// change to make sure player is in front (taken care of by checking that enemy is in pursuit/intercept)
 		if (firing_timer_->Finished() && !exploding_ && (state_ == pursuit || state_ == intercepting) && !target_->GetExploding()) {
 			firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
 
-			// fire a wave projectile
-			return new WaveProjectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_wave_bullet], GetBearing(), player);
+			// fire 2 wave projectiles
+			vec->push_back(new WaveProjectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_wave_bullet], GetBearing(), player, true));
+			vec->push_back(new WaveProjectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_wave_bullet], GetBearing(), player, false));
 		}
 
-		return nullptr;
+		return vec;
 	}
 
 	void PatrolEnemyGameObject::Update(double delta_time, GLuint* textures)
