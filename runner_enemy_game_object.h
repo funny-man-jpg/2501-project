@@ -23,10 +23,6 @@ namespace game {
 
 			// drop collectibles
 			virtual CollectibleGameObject* DropCollectible(GLuint* textures);
-		private:
-			RunnerEnemyGameObject* child;
-			bool head;
-			int segments;
 	};
 }
 
