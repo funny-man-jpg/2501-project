@@ -11,6 +11,8 @@ namespace game {
 		barrel_ = new BossPart(glm::vec3(1, 0, 0), geom, shader, texture, target, 3);
 		base_part_->AddChild(gun_arm_);
 		gun_arm_->AddChild(barrel_);
+
+		score_value_ = 250;
 	}
 
 	// handle shooting
@@ -33,10 +35,21 @@ namespace game {
 
 	BossPart::BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int type, BossPart* parent)
 	: EnemyGameObject(position, geom, shader, texture, target)
-{
-	parent_ = parent;
-	partType = type;
-}
+	{
+		parent_ = parent;
+		partType = type;
+	}
+
+	// get forwards direction
+	glm::vec3 BossPart::GetBearing(void) const {
+		if (parent_ != nullptr) {
+			return GameObject::GetBearing() + parent_->GetBearing();
+		}
+		else {
+			return GameObject::GetBearing();
+		}
+	}
+
 void BossPart::Update(double delta_time, GLuint* textures) {
 	// Track the player
 	glm::vec3 direction_to_player = glm::normalize(target_->GetPosition() - glm::vec3(world_transform_[3]));

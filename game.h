@@ -41,6 +41,9 @@
 // definition for random angles
 #define MAX_DEGREES 360
 
+// definition for spawning
+#define SPAWN_SHIFT 1.0f
+
 namespace game {
 
     // A class for holding the main game objects

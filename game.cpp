@@ -296,6 +296,16 @@ void Game::Update(double delta_time)
             game_objects_.erase(game_objects_.begin() + i);
             continue;
         }
+        else if (current_game_object->GetExploding()) {
+            if (current_game_object->GetType() == enemy) {
+                EnemyGameObject *enemy = (EnemyGameObject*) current_game_object;
+
+                if (!enemy->GetValueCounted()) {
+                    *score_ += enemy->GetScoreValue();
+                    enemy->SetValueCounted(true);
+                }
+            }
+        }
 
         // Check for collision with other game objects
         // Note the loop bounds: we avoid testing the last object since
@@ -380,6 +390,21 @@ glm::vec3 Game::GetRandomPosition() {
 
     if (rand() % 2) {
         y = -y;
+    }
+
+    // make sure position is near the player, but not too close
+    if (x >= 0) {
+        x += SPAWN_SHIFT;
+    }
+    else {
+        x -= SPAWN_SHIFT;
+    }
+
+    if (y >= 0) {
+        y += SPAWN_SHIFT;
+    }
+    else {
+        y -= SPAWN_SHIFT;
     }
 
     x += player_->GetPosition().x;

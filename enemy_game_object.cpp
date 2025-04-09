@@ -28,6 +28,10 @@ namespace game {
 
 		// set up stun timer
 		stun_timer_ = new Timer();
+
+		// set up scoring attributes
+		score_value_ = 0;
+		value_counted_ = false;
 	}
 
 	// Deconstructor

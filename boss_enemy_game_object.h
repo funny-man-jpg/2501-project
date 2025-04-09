@@ -12,6 +12,9 @@ namespace game {
 	public:
 		BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, int type, BossPart* parent = nullptr);
 
+		// get forwards direction
+		virtual glm::vec3 GetBearing(void) const;
+
 		glm::mat4 local_transform_;
 		glm::mat4 world_transform_;
 		BossPart* parent_;

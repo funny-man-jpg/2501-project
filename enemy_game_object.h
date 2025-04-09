@@ -34,8 +34,13 @@ namespace game {
 			EnemyGameObject(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target);
 			virtual ~EnemyGameObject(void);
 
+			// Getters
+			int GetScoreValue(void) { return score_value_; }
+			bool GetValueCounted(void) { return value_counted_; }
+		
 			// Setters
 			void SetTarget(PlayerGameObject* player);
+			void SetValueCounted(bool value_counted) { value_counted_ = value_counted; }
 
 			// change the direction the enemy is travelling in
 			void SetVelocityDirection(glm::vec3 velocity);
@@ -77,6 +82,10 @@ namespace game {
 
 			// timer for being stunned
 			Timer *stun_timer_;
+
+			// attributes for scoring
+			int score_value_;
+			bool value_counted_;
 	};
 }
 
