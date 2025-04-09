@@ -392,6 +392,21 @@ glm::vec3 Game::GetRandomPosition() {
         y = -y;
     }
 
+    // make sure position is near the player, but not too close
+    if (x >= 0) {
+        x += SPAWN_SHIFT;
+    }
+    else {
+        x -= SPAWN_SHIFT;
+    }
+
+    if (y >= 0) {
+        y += SPAWN_SHIFT;
+    }
+    else {
+        y -= SPAWN_SHIFT;
+    }
+
     x += player_->GetPosition().x;
     y += player_->GetPosition().y;
 
