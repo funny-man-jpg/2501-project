@@ -29,6 +29,7 @@
 #include "game.h"
 #include "particles.h"
 #include "particle_system.h"
+#include "boss_enemy_game_object.h"
 
 namespace game {
 
@@ -120,6 +121,10 @@ void Game::SetupGameWorld(void)
     EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy4);
     game_objects_[4]->SetRotation(pi_over_two);
+    EnemyGameObject* enemy5 = new BossEnemyObject(glm::vec3(2.2f, 3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
+    game_objects_.push_back(enemy5);
+    game_objects_[5]->SetRotation(pi_over_two);
+    game_objects_[5]->SetScale(glm::vec2(5,5));
     // give the enemy a reference to the player
     //enemy4->SetTarget(player_);
 

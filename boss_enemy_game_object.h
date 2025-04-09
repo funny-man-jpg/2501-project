@@ -7,6 +7,22 @@
 #define SHOOTING_RANGE 5.0
 
 namespace game {
+
+	class BossPart : public EnemyGameObject {
+	public:
+		BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, BossPart* parent = nullptr);
+
+		glm::mat4 local_transform_;
+		glm::mat4 world_transform_;
+		BossPart* parent_;
+		std::vector<BossPart*> children_;
+		void Update(double delta_time, GLuint* textures) override;
+		void Render(glm::mat4 view_matrix, double current_time) override;
+		virtual std::vector<Projectile*>* Shoot(GLuint* textures);
+		void AddChild(BossPart* child);
+	};
+
+
 	class BossEnemyObject : public EnemyGameObject {
 		public:
 			// Constructor
@@ -22,18 +38,7 @@ namespace game {
 	};
 
 
-	class BossPart : public EnemyGameObject {
-	public:
-		BossPart(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, PlayerGameObject* target, BossPart* parent = nullptr);
-
-		glm::mat4 local_transform_;
-		glm::mat4 world_transform_;
-		BossPart* parent_;
-		std::vector<BossPart*> children_;
-		void Update(double delta_time, GLuint* textures) override;
-		Projectile* Shoot(GLuint* textures);
-		void AddChild(BossPart* child);
-	};
+	
 
 }
 

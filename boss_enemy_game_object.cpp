@@ -48,33 +48,36 @@ void BossPart::Update(double delta_time, GLuint* textures) {
 	glm::mat4 scaling = glm::scale(glm::mat4(1.0f), glm::vec3(scale_, 1.0f));
 	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), angle_, glm::vec3(0, 0, 1));
 	glm::mat4 translation = glm::translate(glm::mat4(1.0f), position_);
-	local_transform_ = translation * rotation * scaling;
 
 	// If we have a parent, apply parent's world transform
 	if (parent_) {
-		world_transform_ = parent_->world_transform_ * local_transform_;
+		world_transform_ = parent_->world_transform_ * translation * rotation;
+		local_transform_ = world_transform_ * scaling;
 	}
 	else {
-		world_transform_ = local_transform_;
+		world_transform_ = translation * rotation;
 	}
 
-	// Propagate to children
+	// update children
 	for (auto* child : children_) {
 		child->Update(delta_time, textures);
 	}
 }
 
-Projectile* BossPart::Shoot(GLuint* textures)
-{
+std::vector<Projectile*>* BossPart::Shoot(GLuint* textures) {
+	std::vector<Projectile*>* vec = new std::vector<Projectile*>;
+
+	// check if close enough to player (we are always chasing so wanna make sure that we arent shooting from 50 miles off the screen)
+	// change to make sure player is in front as well (taken care of by checking that enemy is in pursuit/intercept)
 	if (firing_timer_->Finished() && glm::length(target_->GetPosition() - position_) <= SHOOTING_RANGE && !exploding_
 		&& (state_ == pursuit || state_ == intercepting) && !target_->GetExploding()) {
 		firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
 
 		// fire a basic projectile
-		return new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player);
+		vec->push_back(new Projectile(position_ + radius_ * GetBearing(), geometry_, shader_, textures[tex_attacker_bullet], GetBearing(), player));
 	}
 
-	return nullptr;
+	return vec;
 }
 void BossPart::Render(glm::mat4 view_matrix, double current_time) {
 	shader_->Enable();
@@ -83,7 +86,7 @@ void BossPart::Render(glm::mat4 view_matrix, double current_time) {
 	shader_->SetUniform1f("tex_size", tex_size_);
 	shader_->SetUniformMat4("view_matrix", view_matrix);
 
-	shader_->SetUniformMat4("transformation_matrix", world_transform_);
+	shader_->SetUniformMat4("transformation_matrix", local_transform_);
 
 	geometry_->SetGeometry(shader_->GetShaderProgram());
 	glBindTexture(GL_TEXTURE_2D, texture_);
