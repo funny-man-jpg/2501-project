@@ -101,35 +101,37 @@ void Game::SetupGameWorld(void)
     game_objects_[0]->SetRotation(pi_over_two);
 
     // add the hud
-    game_objects_.push_back(new HUD(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_purple_dragon], tex_[tex_heart], tex_[tex_emp_ammo], player_));
+    game_objects_.push_back(new HUD(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &sprite_shader_, &text_shader_, tex_[tex_purple_dragon], tex_[tex_heart], tex_[tex_emp_ammo], tex_[tex_font], score_, player_));
 
-    TextGameObject *text = new TextGameObject(glm::vec3(0.0f, 0.0f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
-    text->SetText("Score: " + score_);
-    game_objects_.push_back(text);
+    // add the score text
+    //TextGameObject *text = new TextGameObject(glm::vec3(0.0f, -2.0f, 0.0f), sprite_, &text_shader_, tex_[tex_font]);
+    //text->SetScale(glm::vec2(7.0f, 1.0f));
+    //text->SetText("Score: " + *score_);
+    //game_objects_.push_back(text);
 
     // Setup other objects
     EnemyGameObject *enemy1 = new PatrolEnemyGameObject(glm::vec3(-3.0f, 1.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_patrol_spaceship], player_);
     game_objects_.push_back(enemy1);
-    game_objects_[3]->SetRotation(pi_over_two);
+    game_objects_[2]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy1->SetTarget(player_);
     EnemyGameObject* enemy2 = new RunnerEnemyGameObject(glm::vec3(1.0f, -2.75f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_end], player_);
     game_objects_.push_back(enemy2);
-    game_objects_[4]->SetRotation(pi_over_two);
+    game_objects_[3]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy2->SetTarget(player_);
     EnemyGameObject* enemy3 = new AttackerEnemyGameObject(glm::vec3(4.0f, 5.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy3);
-    game_objects_[5]->SetRotation(pi_over_two);
+    game_objects_[4]->SetRotation(pi_over_two);
     // give the enemy a reference to the player
     //enemy3->SetTarget(player_);
     EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy4);
-    game_objects_[6]->SetRotation(pi_over_two);
+    game_objects_[5]->SetRotation(pi_over_two);
     EnemyGameObject* enemy5 = new BossEnemyObject(glm::vec3(2.2f, 3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy5);
-    game_objects_[7]->SetRotation(pi_over_two);
-    game_objects_[7]->SetScale(glm::vec2(5,5));
+    game_objects_[6]->SetRotation(pi_over_two);
+    game_objects_[6]->SetScale(glm::vec2(5,5));
     // give the enemy a reference to the player
     //enemy4->SetTarget(player_);
 
@@ -185,6 +187,9 @@ void Game::DestroyGameWorld(void)
     delete patrol_spawn_timer_;
     delete runner_spawn_timer_;
     delete invincibility_collectible_spawn_timer_;
+
+    // delete score
+    delete score_;
 }
 
 void Game::AddGameObject(GameObject* obj) {
@@ -261,7 +266,7 @@ void Game::Update(double delta_time)
 
     //check the score timer
     if (score_timer_.Finished()) {
-        score_++;
+        (*score_)++;
         score_timer_.Start(1.0);
     }
 
@@ -549,7 +554,8 @@ void Game::Init(void)
     game_over_ = false;
 
     // initialize the score
-    score_ = 0;
+    score_ = new int;
+    (*score_) = 0;
 }
 
 

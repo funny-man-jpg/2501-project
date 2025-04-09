@@ -6,7 +6,7 @@ namespace game {
 
 TextGameObject::TextGameObject(const glm::vec3 &position, Geometry *geom, Shader *shader, GLuint texture) : GameObject(position, geom, shader, texture) {
 
-    text_ = "test";
+    text_ = "";
 }
 
 
@@ -14,6 +14,9 @@ void TextGameObject::Render(glm::mat4 view_matrix, double current_time) {
 
     // Set up the shader
     shader_->Enable();
+
+    // tell the shader how big the texture is
+    shader_->SetUniform1f("tex_size", tex_size_);
 
     // Set up the view matrix
     shader_->SetUniformMat4("view_matrix", view_matrix);

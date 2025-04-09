@@ -7,6 +7,7 @@
 #include "health_collectible.h"
 #include "emp_battery_collectible.h"
 #include "player_game_object.h"
+#include "text_game_object.h"
 
 // z value to render everything on top
 #define Z -2.0f
@@ -21,11 +22,14 @@
 #define Y_EMP 3.5f
 #define X_EMP_GAP -0.75f
 
+// offsets for score display
+#define Y_SCORE 3.5f
+
 namespace game {
 	class HUD : public GameObject {
 		public:
 			// Constructor/Destructor
-			HUD(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, GLuint health_tex, GLuint emp_tex, PlayerGameObject *player);
+			HUD(const glm::vec3& position, Geometry* geom, Shader* shader, Shader* text_shader, GLuint texture, GLuint health_tex, GLuint emp_tex, GLuint text_tex, int *score, PlayerGameObject *player);
 			virtual ~HUD(void);
 
 			virtual void Update(double delta_time, GLuint* textures);
@@ -38,8 +42,16 @@ namespace game {
 			// emp battery charges display
 			std::vector<EmpBatteryCollectible*> emps_;
 
+			// score display
+			TextGameObject *score_display_;
+
 			// pointer to the player
 			PlayerGameObject *player_;
+
+			// pointer to the score
+			int *score_;
+
+			int some_int;
 	};
 }
 

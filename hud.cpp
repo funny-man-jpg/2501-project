@@ -2,11 +2,18 @@
 
 namespace game {
 	// Constructor/Destructor
-	HUD::HUD(const glm::vec3& position, Geometry* geom, Shader* shader, GLuint texture, GLuint health_tex, GLuint emp_tex, PlayerGameObject* player)
+	HUD::HUD(const glm::vec3& position, Geometry* geom, Shader* shader, Shader* text_shader, GLuint texture, GLuint health_tex, GLuint emp_tex, GLuint text_tex, int *score, PlayerGameObject* player)
 		: GameObject(position, geom, shader, texture) {
+
+
+
+		some_int = 0;
 
 		// set up player pointer
 		player_ = player;
+
+		// set up score pointer
+		score_ = score;
 
 		// set up the health
 		for (int i = 0; i < MAX_HEALTH; i++) {
@@ -18,6 +25,13 @@ namespace game {
 			emps_.push_back(new EmpBatteryCollectible(player_->GetPosition() + glm::vec3(X_EMP + X_EMP_GAP * i, Y_EMP, Z), geom, shader, emp_tex));
 			emps_[i]->SetGhost(true);
 		}
+
+		// set up the score display
+		score_display_ = new TextGameObject(player_->GetPosition() + glm::vec3(0.0f, Y_SCORE, Z), geom, text_shader, text_tex);
+		score_display_->SetRotation(0.0f);
+		score_display_->SetScale(glm::vec2(4.0f, 0.75f));
+		//std::string int_to_string = (std::string)some_int;
+		score_display_->SetText("Score: " + some_int);//*score_);
 	}
 
 	HUD::~HUD() {
@@ -30,6 +44,9 @@ namespace game {
 		for (int i = 0; i < emps_.size(); i++) {
 			delete emps_[i];
 		}
+
+		// delete score display
+		delete score_display_;
 	}
 
 
@@ -58,6 +75,12 @@ namespace game {
 				emps_[i]->SetGhost(false);
 			}
 		}
+
+		some_int++;
+
+		// update score display
+		score_display_->SetPosition(player_->GetPosition() + glm::vec3(0.0f, Y_SCORE, Z));
+		score_display_->SetText("Score: " + some_int);//*score_);
 	}
 
 	void HUD::Render(glm::mat4 view_matrix, double current_time) {
@@ -70,5 +93,8 @@ namespace game {
 		for (int i = 0; i < emps_.size(); i++) {
 			emps_[i]->Render(view_matrix, current_time);
 		}
+
+		// render score display
+		score_display_->Render(view_matrix, current_time);
 	}
 }

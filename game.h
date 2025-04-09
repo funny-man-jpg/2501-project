@@ -108,7 +108,7 @@ namespace game {
             bool game_over_;
 
             // new attribute to keep track of the user's score
-            int score_;
+            int *score_;
 
             // add a GameObject to the vector
             void AddGameObject(GameObject* obj);
