@@ -6,6 +6,9 @@
 // give the projectile a lifespan
 #define LIFESPAN 15
 
+// the z value for projectiles so they are drawn on top
+#define Z -1.0f
+
 namespace game {
 	class Projectile : public GameObject {
 		public:
