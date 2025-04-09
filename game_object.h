@@ -86,7 +86,7 @@ namespace game {
 
             // Get bearing direction (direction in which the game object
             // is facing)
-            glm::vec3 GetBearing(void) const;
+            virtual glm::vec3 GetBearing(void) const;
 
             // Get vector pointing to the right side of the game object
             glm::vec3 GetRight(void) const;
