@@ -86,6 +86,7 @@ void Game::SetupGameWorld(void)
     textures.push_back("/textures/emp_ring.png");
 
     textures.push_back("/textures/font.png");
+    textures.push_back("textures/turret.png");
 
     // Load textures
     LoadTextures(textures);
@@ -128,7 +129,7 @@ void Game::SetupGameWorld(void)
     EnemyGameObject* enemy4 = new AttackerEnemyGameObject(glm::vec3(-2.2f, -3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
     game_objects_.push_back(enemy4);
     game_objects_[5]->SetRotation(pi_over_two);
-    EnemyGameObject* enemy5 = new BossEnemyObject(glm::vec3(2.2f, 3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_attacker_spaceship], player_);
+    EnemyGameObject* enemy5 = new BossEnemyObject(glm::vec3(2.2f, 3.0f, 0.0f), sprite_, &sprite_shader_, tex_[tex_runner_middle], player_);
     game_objects_.push_back(enemy5);
     game_objects_[6]->SetRotation(pi_over_two);
     game_objects_[6]->SetScale(glm::vec2(5,5));

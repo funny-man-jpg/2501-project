@@ -49,7 +49,7 @@ namespace game {
 			void Update(double delta_time, GLuint* textures) override;
 
 			// deal with collisions
-			void Hit(GLuint* textures, GameObject* other) override;
+			virtual void Hit(GLuint* textures, GameObject* other) override;
 
 			// handle shooting
 			virtual std::vector<Projectile*>* Shoot(GLuint* textures) = 0;

@@ -47,7 +47,7 @@ namespace game {
         tex_wave_bullet = 15,
         tex_bomb = 16,
         tex_emp_ring = 17,
-        tex_font = 18
+        tex_font = 18,
     };
 
     // collision types
