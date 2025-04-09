@@ -23,6 +23,7 @@ PlayerGameObject::PlayerGameObject(const glm::vec3 &position, Geometry *geom, Sh
 	accel_mag_ = 3.0f;
 
 	firing_timer_ = new Timer();
+	emp_ring_timer_ = new Timer();
 }
 
 // Deconstructor
@@ -108,8 +109,9 @@ Projectile* PlayerGameObject::Fire(GLuint tex) {
 
 // second weapon shooting function (emp ring)
 EmpRing* PlayerGameObject::EmpRingFire(GLuint tex) {
-	if (emp_battery_collected_ > 0) {
+	if (emp_battery_collected_ > 0 && emp_ring_timer_->Finished()) {
 		emp_battery_collected_--;
+		emp_ring_timer_->Start(EMP_RING_DURATION);
 
 		return new EmpRing(position_, geometry_, shader_, tex, this);
 	}

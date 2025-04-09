@@ -41,14 +41,14 @@ namespace game {
 
 	// function to check if 2 objects have collided (circle circle)
 	void WaveProjectile::CheckForCollision(GLuint* textures, GameObject* other) {
-		if (other->GetType() == target_type_) {
+		if (other->GetType() == target_type_ || other->GetType() == emp_ring) {
 			GameObject::CheckForCollision(textures, other);
 		}
 	}
 
 	// function to handle collisions
 	void WaveProjectile::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == target_type_) {
+		if (other->GetType() == target_type_ || other->GetType() == emp_ring) {
 			SetCollideability(false);
 			texture_ = textures[tex_explosion];
 			exploding_ = true;

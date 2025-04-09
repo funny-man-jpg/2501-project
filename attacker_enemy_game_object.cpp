@@ -22,54 +22,56 @@ namespace game {
 	}
 	void AttackerEnemyGameObject::Update(double delta_time, GLuint* textures)
 	{
-		if (glm::length(target_->GetPosition() - position_) < PURSUIT_CHANGE_DISTANCE && glm::length(target_->GetPosition() - position_) > CHASE_CHANGE_DISTANCE) {
-			state_ = intercepting;
-		}
-		// if patrolling, do the ellipse
-		if (state_ == patrolling) {
-			if (retarget_->Finished()) {
-				// Random point in angle opening
-				float r_num = ((float)rand()) / ((float)RAND_MAX);
-				float opening = 5.0 * 3.141592 / 180.0; // Add PI from the glm library
-				float r_angle = r_num * 2.0 * opening + angle_ - opening;
-				float r = 0.25;
-				glm::vec3 target(r * cos(r_angle), r * sin(r_angle), 0.0);
-				// Steering to target
-				glm::vec3 desired = target;
-				glm::vec3 steering = desired + velocity_;
-				steering /= glm::length(steering);
-				steering *= 0.1; // Adjust force magnitude
-				velocity_ += steering;
-				// Reset timer to only update wander every 1s
-				retarget_->Start(1.0);
+		if (stun_timer_->Finished()) {
+			if (glm::length(target_->GetPosition() - position_) < PURSUIT_CHANGE_DISTANCE && glm::length(target_->GetPosition() - position_) > CHASE_CHANGE_DISTANCE) {
+				state_ = intercepting;
 			}
-
-		}
-		// if intercepting, chase the player
-		else if (state_ == intercepting && !exploding_ ) {
-			double rads = t_ * FULL_CIRCLE * rps_;
-			position_ = glm::vec3(2 * cos(rads) + target_->GetPosition().x, 2 * sin(rads) + target_->GetPosition().y, 0.0);
-		}
-		if (!exploding_) {
-			glm::vec3 prev_position = position_;
-
-			// check if need to change state
-			glm::vec3 heading;
-			if (state_ != intercepting) {
-				position_ += velocity_ * (float)delta_time;
-			}
+			// if patrolling, do the ellipse
 			if (state_ == patrolling) {
-				heading = position_ - prev_position;
-			}
-			else {
-				heading =  target_->GetPosition() - position_;
-			}
+				if (retarget_->Finished()) {
+					// Random point in angle opening
+					float r_num = ((float)rand()) / ((float)RAND_MAX);
+					float opening = 5.0 * 3.141592 / 180.0; // Add PI from the glm library
+					float r_angle = r_num * 2.0 * opening + angle_ - opening;
+					float r = 0.25;
+					glm::vec3 target(r * cos(r_angle), r * sin(r_angle), 0.0);
+					// Steering to target
+					glm::vec3 desired = target;
+					glm::vec3 steering = desired + velocity_;
+					steering /= glm::length(steering);
+					steering *= 0.1; // Adjust force magnitude
+					velocity_ += steering;
+					// Reset timer to only update wander every 1s
+					retarget_->Start(1.0);
+				}
 
-			float angle = glm::atan(heading.y, heading.x);
-			
-			SetRotation(angle);
+			}
+			// if intercepting, chase the player
+			else if (state_ == intercepting && !exploding_) {
+				double rads = t_ * FULL_CIRCLE * rps_;
+				position_ = glm::vec3(2 * cos(rads) + target_->GetPosition().x, 2 * sin(rads) + target_->GetPosition().y, 0.0);
+			}
+			if (!exploding_) {
+				glm::vec3 prev_position = position_;
 
-			t_ += delta_time;
+				// check if need to change state
+				glm::vec3 heading;
+				if (state_ != intercepting) {
+					position_ += velocity_ * (float)delta_time;
+				}
+				if (state_ == patrolling) {
+					heading = position_ - prev_position;
+				}
+				else {
+					heading = target_->GetPosition() - position_;
+				}
+
+				float angle = glm::atan(heading.y, heading.x);
+
+				SetRotation(angle);
+
+				t_ += delta_time;
+			}
 		}
 
 		GameObject::Update(delta_time, textures);

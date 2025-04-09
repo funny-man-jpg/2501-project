@@ -66,6 +66,7 @@ namespace game {
 
             // firing values
             Timer *firing_timer_;
+            Timer *emp_ring_timer_;
 
     }; // class PlayerGameObject
 

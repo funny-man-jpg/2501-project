@@ -54,7 +54,7 @@ namespace game {
 
 	void Projectile::CheckForCollision(GLuint *textures, GameObject *other) {
 		// do ray circle collision
-		if (other->GetType() == target_type_) {
+		if (other->GetType() == target_type_ || (other->GetType() == emp_ring && target_type_ == player)) {
 			// calculate the intersection times
 			glm::vec3 d = this->GetBearing();
 			glm::vec3 circlePartToRayPart = this->position_ - other->GetPosition();
@@ -82,7 +82,7 @@ namespace game {
 	}
 
 	void Projectile::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == target_type_) {
+		if (other->GetType() == target_type_ || (other->GetType() == emp_ring && target_type_ == player)) {
 			texture_ = textures[tex_explosion];
 			exploding_ = true;
 			scale_ = glm::vec2(0.75f);

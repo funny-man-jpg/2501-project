@@ -25,12 +25,16 @@ namespace game {
 		// set up shooting
 		firing_timer_ = new Timer();
 		firing_timer_->Start(ENEMY_FIRING_COOLDOWN);
+
+		// set up stun timer
+		stun_timer_ = new Timer();
 	}
 
 	// Deconstructor
 	EnemyGameObject::~EnemyGameObject(void) {
 		delete retarget_;
 		delete firing_timer_;
+		delete stun_timer_;
 	}
 
 	// Setters
@@ -45,20 +49,22 @@ namespace game {
 
 	// Update function for moving the enemy around
 	void EnemyGameObject::Update(double delta_time, GLuint* textures) {
-		// only update the position if still alive/not exploding
-		if (!exploding_) {
-			glm::vec3 prev_position = position_;
+		if (stun_timer_->Finished()) {
+			// only update the position if still alive/not exploding
+			if (!exploding_) {
+				glm::vec3 prev_position = position_;
 
-			// check if need to change state
+				// check if need to change state
 
-			
-			position_ += velocity_ * (float)delta_time;
-			glm::vec3 heading = position_ - prev_position;
 
-			float angle = glm::atan(heading.y, heading.x);
-			SetRotation(angle);
+				position_ += velocity_ * (float)delta_time;
+				glm::vec3 heading = position_ - prev_position;
 
-			t_ += delta_time;
+				float angle = glm::atan(heading.y, heading.x);
+				SetRotation(angle);
+
+				t_ += delta_time;
+			}
 		}
 
 		// Call the parent's update method to move the object in standard way, if desired
@@ -66,11 +72,14 @@ namespace game {
 	}
 
 	void EnemyGameObject::Hit(GLuint* textures, GameObject* other) {
-		if (other->GetType() == player || (other->GetType() == projectile && ((Projectile*) other)->GetTargetType() == enemy) || other->GetType() == emp_ring) {
+		if (other->GetType() == player || (other->GetType() == projectile && ((Projectile*) other)->GetTargetType() == enemy)) {
 			SetCollideability(false);
 			texture_ = textures[tex_explosion];
 			exploding_ = true;
 			timer_->Start(EXPLOSION_LENGTH);
+		}
+		else if (other->GetType() == emp_ring) {
+			stun_timer_->Start(STUN_DURATION);
 		}
 	}
 

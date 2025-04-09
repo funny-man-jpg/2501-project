@@ -14,6 +14,10 @@
 // definition for collectible drop rates
 #define DROP_CHANCE 3
 
+// definition for stun length
+#define STUN_DURATION 4
+
+
 namespace game {
 	// enemy's different states
 	enum {
@@ -69,6 +73,9 @@ namespace game {
 
 			// attributes for shooting
 			Timer *firing_timer_;
+
+			// timer for being stunned
+			Timer *stun_timer_;
 	};
 }
 
